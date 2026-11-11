@@ -6,27 +6,23 @@ The existing Next.js/React/Tailwind project is retained. Only the `/` homepage i
 
 `components/site-frame.tsx` selects the new homepage chrome only at `/`; other paths continue to use their original header and footer. The existing logo/monogram and company wordmark are reused. Homepage type uses the existing locally hosted Manrope family, with warm white `#F7F6F2`, navy `#142333` and small muted gold `#B39762` details. The single visible H1 and copy follow the supplied brief.
 
-## Product approval and missing photography
+## Product approval and photography
 
-The repository and workspace were inspected, including existing public images, earlier mockups and available files. **No actual product photographs for the five approved types were supplied.** Previous generated mockups, generic illustrations, vehicle photos and wall-charger imagery are not used anywhere on this homepage.
+Four owner-supplied product references are now used: a white USB-C to Lightning cable, a compact black dual-port car charger, an aluminium RFID card holder and a dark 4-in-1 braided cable. Marketplace banners, bank-card branding and promotional text were removed, and the products were placed on a consistent warm-white background. The edited local WebP assets retain the supplied product forms and do not introduce competitor branding or wall adapters.
 
-The page intentionally displays labelled “Product photograph pending” panels. These are not product renderings or substitutes. The photographic showcase is not complete and must not be described as having verified product images.
+The supplied car-charger photograph is black even though its accompanying description said white, so the homepage accurately describes and shows the black item. No white version was invented.
 
-Provide at least these original photographs/cutouts on white, transparent or light-stone backgrounds (ideally 1,600 pixels or more on the long edge):
+One essential photograph is still missing:
 
 | Required photo | What must be clearly shown | Suggested local filename |
 | --- | --- | --- |
-| Nylon-braided cable | Actual braided texture, finish and both actual connectors | `/images/homepage/nylon-braided-cable.webp` |
-| Lightning cable | Actual Lightning connector and the other actual connector; no inferred brand/authenticity | `/images/homepage/lightning-cable.webp` |
 | USB-C to USB-C cable | Both USB-C ends and actual cable finish | `/images/homepage/usb-c-to-usb-c-cable.webp` |
-| Car charger | Actual in-car charger shape, finish and ports; not a wall adapter | `/images/homepage/car-charger.webp` |
-| RFID wallet | Actual exterior, proportions and material | `/images/homepage/rfid-wallet.webp` |
 
-An additional wallet angle/colour/interior photo is optional and may be used only if actually supplied. No interior or product feature is invented. The Our Business composition can reuse the actual cable/wallet images; no warehouse photograph is implied.
+Until that image is supplied, the USB-C to USB-C item alone retains an explicit “Product photograph pending” panel. An additional card-holder angle or colour is optional. The Our Business composition reuses the supplied braided-cable and RFID-holder imagery; no warehouse photograph is implied.
 
 To integrate supplied images, place optimized files under `public/images/homepage/` and set their `image` paths in `lib/homepage-content.ts`. `ProductImage` uses Next/Image with reserved space, responsive sizes and `object-fit: contain`; the first hero cable loads with priority. Offscreen images defer. Loading failures show an honest unavailable panel instead of a broken image or unrelated replacement.
 
-There are five selected products because these are the five explicitly confirmed types. No sixth product, inferred variation, stock level, power rating, length, colour, certification or compatibility claim was invented. Lightning and USB-C to USB-C remain named in the first slide and selected products. No Apple/iPhone or Samsung wall adapter is shown in the hero, cards, background or editorial composition.
+There are five selected products because these are the five explicitly confirmed types. No sixth product, stock level, certification or unsupported compatibility claim was invented. The two-metre length comes from the owner's supplied title; visible connector/port descriptions come from the supplied photographs. Lightning and USB-C to USB-C remain named in the first slide and selected products. No Apple/iPhone or Samsung wall adapter is shown in the hero, cards, background or editorial composition.
 
 ## Homepage structure
 
@@ -59,7 +55,7 @@ A receiving business email/phone has not been supplied. The homepage adds no for
 
 ## Verification
 
-See the accompanying homepage browser tests and locally generated screenshots. Acceptance must distinguish implemented carousel/layout/navigation from the **blocked actual-photography requirement**. The public Vercel host could not be inspected because the execution environment denies the outbound connection; local production rendering is the available evidence.
+See the accompanying homepage browser tests and locally generated screenshots. The public Vercel host could not be inspected because the execution environment denies the outbound connection; local production rendering is the available evidence.
 
 ### Executed checks for this revision
 
@@ -68,10 +64,10 @@ See the accompanying homepage browser tests and locally generated screenshots. A
 - Production-browser suite: **19 tests passed, 0 failed/skipped** (11 homepage cases plus 8 existing-route regression cases).
 - Rendered screenshots reviewed at 375, 768, 1024 and 1440 pixels; no horizontal overflow or automated WCAG A/AA violations in those homepage views.
 - Explicitly exercised dropdown hover/click, keyboard opening, End and Escape, mobile Tab/Shift+Tab focus containment and focus return, submenu expansion, carousel controls, swipe, five-second autoplay, hover/focus pause and reduced-motion manual operation.
-- One H1, correct approved product names, no adapter/stock/generated imagery, no retail/account promotions, valid link/anchor destinations and no new homepage JavaScript/console errors were checked.
+- One H1, correct approved product names, no wall-adapter or stock imagery, no retail/account promotions, valid link/anchor destinations and no new homepage JavaScript/console errors were checked.
 - Existing catalogue/search/filters, cart persistence, quote prerequisite states, CSV validation, endpoint protections, account states and SEO/404 routes continue to pass their previous regression cases. They were not redesigned.
-- `homepage-desktop.png` and `homepage-mobile.png` are local review screenshots with **photo-pending panels**, not evidence of final product photography. The previous `lighthouse-summary.json` and earlier design screenshots belong to the previous revision and are not a fresh performance measurement for this homepage.
-- Real-photo composition, connector visibility, material fidelity and supplied-image optimization cannot be verified until the five original product photographs are provided. No replacement stock or generated products were used to make that acceptance criterion appear complete.
+- The previous `lighthouse-summary.json` belongs to an earlier revision and is not a fresh performance measurement for this homepage.
+- The USB-C to USB-C photography requirement remains incomplete until its original photograph is provided.
 
 ### Logo presentation refinement
 

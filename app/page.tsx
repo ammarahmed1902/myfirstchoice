@@ -66,9 +66,8 @@ export default function Home() {
           </Link>
         </div>
         <p className={styles.assetNote}>
-          Product photography is awaiting the supplied images. The product
-          groups below are confirmed; colours, lengths and specifications are
-          discussed on enquiry.
+          Product colours and specifications shown reflect the supplied range.
+          Additional options can be discussed as part of your enquiry.
         </p>
         <div id="charging-cables" className={styles.productGrid}>
           {homeProducts.map((product, index) => (
@@ -114,7 +113,7 @@ export default function Home() {
             <ProductImage product={homeProducts[0]} />
             <ProductImage product={homeProducts[4]} />
           </div>
-          <p>Own-product composition · photography pending</p>
+          <p>Selected products from the supplied range</p>
         </div>
         <div className={styles.businessCopy}>
           <span className={styles.eyebrow}>OUR BUSINESS</span>

@@ -1,5 +1,6 @@
 // Only owner-approved product groups. No wall adapters, inferred brands or stock claims.
-// Supply original product photographs here; never substitute unrelated stock/generated imagery.
+// Owner-supplied product references only. Marketplace overlays were removed for a
+// consistent presentation; no unrelated products or retailer branding are used.
 export type HomeProduct = {
   id: string;
   name: string;
@@ -10,17 +11,17 @@ export type HomeProduct = {
 export const homeProducts: HomeProduct[] = [
   {
     id: "nylon-braided-cable",
-    name: "Nylon-Braided Cable",
-    detail: "Nylon-braided finish",
-    image: null,
-    alt: "Supplied nylon-braided cable, showing its actual connectors and finish",
+    name: "4-in-1 Nylon-Braided Cable",
+    detail: "Braided multi-connector design",
+    image: "/images/homepage/4-in-1-braided-cable.webp",
+    alt: "Dark nylon-braided multi-connector cable with four connector options",
   },
   {
     id: "lightning-cable",
-    name: "Lightning Cable",
-    detail: "Lightning connector",
-    image: null,
-    alt: "Supplied Lightning cable with its actual connectors clearly visible",
+    name: "USB-C to Lightning Cable",
+    detail: "White · 2 metre",
+    image: "/images/homepage/usb-c-to-lightning-cable.webp",
+    alt: "White two-metre cable with USB-C and Lightning connectors",
   },
   {
     id: "usb-c-cable",
@@ -31,17 +32,17 @@ export const homeProducts: HomeProduct[] = [
   },
   {
     id: "car-accessories",
-    name: "Car Charger",
-    detail: "Car accessories",
-    image: null,
-    alt: "Supplied in-car charger, showing its actual ports and finish",
+    name: "Compact Car Charger",
+    detail: "USB-A and USB-C ports",
+    image: "/images/homepage/compact-car-charger.webp",
+    alt: "Compact black in-car charger with USB-A and USB-C ports",
   },
   {
     id: "rfid-wallets",
-    name: "RFID Wallet",
-    detail: "Everyday carry accessories",
-    image: null,
-    alt: "Supplied RFID wallet showing its actual exterior and material",
+    name: "Aluminium RFID Card Holder",
+    detail: "Accordion-style card case",
+    image: "/images/homepage/rfid-card-holder.webp",
+    alt: "Black aluminium RFID card holder with accordion-style compartments",
   },
 ];
 export const homeSlides = [

@@ -13,11 +13,11 @@ test("home exposes the approved product groups, no wall-adapter imagery or retai
   await ready(page);
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   for (const name of [
-    "Nylon-Braided Cable",
-    "Lightning Cable",
+    "4-in-1 Nylon-Braided Cable",
+    "USB-C to Lightning Cable",
     "USB-C to USB-C Cable",
-    "Car Charger",
-    "RFID Wallet",
+    "Compact Car Charger",
+    "Aluminium RFID Card Holder",
   ])
     await expect(
       page.getByRole("heading", { level: 3, name, exact: true }),
@@ -25,7 +25,12 @@ test("home exposes the approved product groups, no wall-adapter imagery or retai
   expect(await page.locator("main").innerText()).not.toMatch(
     /Samsung|Apple|iPhone|wall adapter|bestseller|£|\$|Sign up|Add to cart/i,
   );
-  await expect(page.locator("main img")).toHaveCount(0);
+  await expect(page.locator("main img")).toHaveCount(13);
+  await expect(
+    page.locator(
+      '[role="img"][aria-label^="USB-C to USB-C Cable: actual product photograph"]',
+    ),
+  ).toHaveCount(3);
   await expect(
     page.getByRole("link", {
       name: /account|checkout|registration|shopping cart/i,
@@ -109,7 +114,9 @@ test("three slides have stationary copy, next/previous, indicators and swipe", a
   const carousel = page.getByRole("region", {
     name: "Wholesale product ranges",
   });
-  const initial = await page.locator("h1").boundingBox();
+  const heading = page.getByRole("heading", { level: 1 });
+  await expect(heading).toHaveCount(1);
+  const initial = await heading.boundingBox();
   const labels = ["Charging Cables", "Car Accessories", "RFID Wallets"];
   for (let i = 0; i < 3; i++) {
     await carousel
@@ -121,7 +128,8 @@ test("three slides have stationary copy, next/previous, indicators and swipe", a
     await expect(
       carousel.getByRole("button", { name: `Show ${labels[i]} slide` }),
     ).toHaveAttribute("aria-pressed", "true");
-    expect(await page.locator("h1").boundingBox()).toEqual(initial);
+    await expect(heading).toHaveCount(1);
+    expect(await heading.boundingBox()).toEqual(initial);
   }
   await carousel
     .getByRole("button", { name: "Show Charging Cables slide" })
