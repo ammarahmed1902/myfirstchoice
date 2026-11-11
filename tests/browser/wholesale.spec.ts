@@ -1,23 +1,28 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-test("home is server rendered and primary navigation reaches real category URLs", async ({
+test("home is server rendered and the existing catalogue route is preserved", async ({
   page,
   request,
 }) => {
   const response = await request.get("/");
   expect(response.status()).toBe(200);
-  expect(await response.text()).toContain("Good products.");
+  expect(await response.text()).toContain("Everyday accessories.");
   await page.goto("/");
   await page.waitForFunction(
     () => document.documentElement.dataset.tradeReady === "true",
   );
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Better");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Ready for your business.",
+  );
   await page
-    .getByRole("navigation")
-    .getByRole("link", { name: "Car accessories", exact: true })
+    .getByRole("button", { name: "Our Catalogue", exact: true })
     .click();
-  await expect(page).toHaveURL(/\/shop\/car-accessories$/);
-  await expect(page.locator(".product-card")).toHaveCount(3);
+  await page
+    .getByRole("navigation", { name: "Main navigation", exact: true })
+    .getByRole("link", { name: /View All Products/ })
+    .click();
+  await expect(page).toHaveURL(/\/shop$/);
+  await expect(page.locator(".product-card")).toHaveCount(6);
 });
 test("filters, search and explicit empty states work", async ({ page }) => {
   await page.goto("/shop");
@@ -81,13 +86,11 @@ test("CSV import is atomic, validates unknown references and combines duplicates
     page.getByRole("heading", { name: "Your next enquiry starts here." }),
   ).toBeVisible();
   await page.goto("/quick-order");
-  await page
-    .getByLabel("Choose CSV file")
-    .setInputFiles({
-      name: "valid.csv",
-      mimeType: "text/csv",
-      buffer: Buffer.from('\uFEFFsku,quantity\n"EL-001",5\nEL-001,2\nCA-002,3'),
-    });
+  await page.getByLabel("Choose CSV file").setInputFiles({
+    name: "valid.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from('\uFEFFsku,quantity\n"EL-001",5\nEL-001,2\nCA-002,3'),
+  });
   await expect(
     page.getByRole("status").filter({ hasText: "3 valid lines added" }),
   ).toBeVisible();
@@ -151,11 +154,16 @@ test("mobile navigation, layout and key pages have no WCAG A/AA axe violations",
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Open menu" }).click();
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
   await page
-    .getByRole("navigation")
-    .getByRole("link", { name: "Electronics", exact: true })
+    .getByRole("navigation", { name: "Mobile navigation" })
+    .getByRole("button", { name: "Our Catalogue" })
     .click();
+  await page
+    .getByRole("navigation", { name: "Mobile navigation" })
+    .getByRole("link", { name: "View All Products" })
+    .click();
+  await expect(page).toHaveURL(/\/shop$/);
   await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
   for (const path of [
     "/",

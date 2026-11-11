@@ -15,8 +15,7 @@ const bodyFont = localFont({
   adjustFontFallback: "Arial",
 });
 import "./globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { SiteFrame } from "@/components/site-frame";
 import { TradeProvider } from "@/components/trade-provider";
 import { business } from "@/lib/config";
 export const metadata: Metadata = {
@@ -54,9 +53,7 @@ export default function RootLayout({
           <a href="#main-content" className="skip-link">
             Skip to content
           </a>
-          <Header />
-          <main id="main-content">{children}</main>
-          <Footer />
+          <SiteFrame>{children}</SiteFrame>
         </TradeProvider>
       </body>
     </html>
