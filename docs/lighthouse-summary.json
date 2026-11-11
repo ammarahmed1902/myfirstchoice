@@ -1,0 +1,59 @@
+{
+  "url": "http://127.0.0.1:3000/",
+  "measuredAt": "2026-11-11T12:46:23.259Z",
+  "lighthouseVersion": "13.6.0",
+  "environment": "Local Next.js production server; mobile simulated throttling; remote photo host blocked; local image fallbacks; pre-launch noindex enabled",
+  "scores": {
+    "performance": 99,
+    "accessibility": 100,
+    "best-practices": 96,
+    "seo": 69
+  },
+  "metrics": {
+    "first-contentful-paint": {
+      "value": 758.9581000000001,
+      "unit": "millisecond",
+      "display": "0.8 s"
+    },
+    "largest-contentful-paint": {
+      "value": 758.9581000000001,
+      "unit": "millisecond",
+      "display": "0.8 s"
+    },
+    "cumulative-layout-shift": {
+      "value": 0,
+      "unit": "unitless",
+      "display": "0"
+    },
+    "total-blocking-time": {
+      "value": 114,
+      "unit": "millisecond",
+      "display": "110 ms"
+    },
+    "speed-index": {
+      "value": 758.9581000000001,
+      "unit": "millisecond",
+      "display": "0.8 s"
+    }
+  },
+  "failedBinaryAudits": [
+    {
+      "id": "errors-in-console",
+      "title": "Browser errors were logged to the console"
+    },
+    {
+      "id": "label-content-name-mismatch",
+      "title": "Elements with visible text labels do not have matching accessible names."
+    },
+    {
+      "id": "is-crawlable",
+      "title": "Page is blocked from indexing"
+    }
+  ],
+  "limits": [
+    "Single local lab run, not a live Vercel audit or field Core Web Vitals measurement.",
+    "INP and real-user conversion were not measured.",
+    "SEO score is intentionally reduced by noindex while company/catalogue/legal details are provisional.",
+    "External Unsplash photo success was not verified."
+  ]
+}

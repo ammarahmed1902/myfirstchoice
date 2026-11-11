@@ -1,6 +1,6 @@
 # Representative photo sources
 
-The following online Unsplash images are used as category mood photography. The URL parameters select responsive image dimensions, crop and compression. Photographs are not verified photographs of the company's inventory and are labelled as representative on the website.
+The following online Unsplash images are used as category mood photography. Next/Image uses a custom responsive Unsplash CDN loader; URL parameters select image dimensions, crop, compression and automatic format. This avoids making application-origin navigation compete with slow server-side proxy requests to the remote image host. Photographs are not verified photographs of the company's inventory and are labelled as representative on the website.
 
 | Placement | Online source |
 | --- | --- |
