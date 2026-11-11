@@ -18,18 +18,18 @@ One essential photograph is still missing:
 | --- | --- | --- |
 | USB-C to USB-C cable | Both USB-C ends and actual cable finish | `/images/homepage/usb-c-to-usb-c-cable.webp` |
 
-Until that image is supplied, the USB-C to USB-C item alone retains an explicit “Product photograph pending” panel. An additional card-holder angle or colour is optional. The Our Business composition reuses the supplied braided-cable and RFID-holder imagery; no warehouse photograph is implied.
+Until that image is supplied, the USB-C to USB-C item is named as an intended range option but is not represented by a product photograph or public placeholder. An additional card-holder angle or colour is optional. The Our Business composition reuses the supplied braided-cable and RFID-holder imagery; no warehouse photograph is implied.
 
-To integrate supplied images, place optimized files under `public/images/homepage/` and set their `image` paths in `lib/homepage-content.ts`. `ProductImage` uses Next/Image with reserved space, responsive sizes and `object-fit: contain`; the first hero cable loads with priority. Offscreen images defer. Loading failures show an honest unavailable panel instead of a broken image or unrelated replacement.
+Product-card sources live under `public/images/homepage/`; finished wide and portrait scenes live under `public/images/hero/`. The hero uses responsive `<picture>` sources so mobile does not rely on a desktop crop. Product cards use Next/Image with reserved space, responsive sizes and `object-fit: contain`; loading failures show an honest unavailable state instead of an unrelated replacement.
 
-There are five selected products because these are the five explicitly confirmed types. No sixth product, stock level, certification or unsupported compatibility claim was invented. The two-metre length comes from the owner's supplied title; visible connector/port descriptions come from the supplied photographs. Lightning and USB-C to USB-C remain named in the first slide and selected products. No Apple/iPhone or Samsung wall adapter is shown in the hero, cards, background or editorial composition.
+There are four selected-product cards because only four types have approved photographs. No additional product, stock level, certification or unsupported compatibility claim was invented. The two-metre length comes from the owner's supplied title; visible connector/port descriptions come from the supplied photographs. Lightning and USB-C to USB-C remain named in the charging-cables slide status. No Apple/iPhone or Samsung wall adapter is shown in the hero, cards, background or editorial composition.
 
 ## Homepage structure
 
 - Compact, sticky header: original logo, Home, Our Catalogue dropdown, About Us, Contact Us, Wholesale Enquiry.
-- Approximately 40/60 split hero, with stationary copy and a fixed-height three-slide product stage.
-- Charging Cables / Car Accessories / RFID Wallets slides; next/previous, indicators, pause/play, swipe, hover/focus pause and reduced-motion handling. Next/autoplay loop right-to-left with boundary clones; the reset does not animate backwards.
-- Five selected product groups; no prices, ratings or marketing badges.
+- Full-viewport-width campaign hero with the photographic slideshow behind stationary HTML copy, a directional readability overlay and controls above all visual layers. The former 40/60 split, grey showcase panel and thumbnail composition were removed.
+- Separate desktop and mobile Charging Cables / Car Accessories / RFID Wallets banners; next/previous, indicators, pause/play, swipe, hover/focus pause and reduced-motion handling. Next/autoplay loop right-to-left with boundary clones; the reset does not animate backwards.
+- Four selected products with supplied photography; no customer-facing missing-image placeholder, prices, ratings or marketing badges.
 - Our Business editorial composition and supplied business copy.
 - Three-step How to Enquire section with fine dividers.
 - Navy wholesale enquiry invitation and refined footer, with existing legal links and configured contact details only.
@@ -68,6 +68,7 @@ See the accompanying homepage browser tests and locally generated screenshots. T
 - Existing catalogue/search/filters, cart persistence, quote prerequisite states, CSV validation, endpoint protections, account states and SEO/404 routes continue to pass their previous regression cases. They were not redesigned.
 - The previous `lighthouse-summary.json` belongs to an earlier revision and is not a fresh performance measurement for this homepage.
 - The USB-C to USB-C photography requirement remains incomplete until its original photograph is provided.
+- Hero evidence: `hero-desktop-cables.png`, `hero-desktop-car-accessories.png`, `hero-desktop-rfid-wallets.png` and `hero-mobile-cables.png`. The source-to-output mapping is recorded in `HERO_ASSETS.md`.
 
 ### Logo presentation refinement
 

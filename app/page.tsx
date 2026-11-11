@@ -18,34 +18,31 @@ export default function Home() {
   return (
     <div id="home" className={styles.home}>
       <section className={styles.hero} aria-labelledby="home-heading">
-        <div className={styles.heroCopy}>
-          <span className={styles.eyebrow}>MY FIRST CHOICE · WHOLESALE</span>
-          <h1 id="home-heading">
-            Everyday accessories.
-            <br />
-            <span>Ready for your business.</span>
-          </h1>
-          <p>
-            Explore charging cables, car accessories and RFID wallets for your
-            wholesale enquiries.
-          </p>
-          <div className={styles.heroActions}>
-            <Link href="/shop" className={styles.button}>
-              Explore Catalogue <ArrowUpRight size={17} aria-hidden="true" />
-            </Link>
-            <Link
-              href="/contact"
-              className={`${styles.button} ${styles.outline}`}
-            >
-              Wholesale Enquiry
-            </Link>
+        <HeroCarousel>
+          <div className={styles.heroCopy}>
+            <span className={styles.eyebrow}>MY FIRST CHOICE · WHOLESALE</span>
+            <h1 id="home-heading">
+              Everyday accessories.
+              <br />
+              <span>Ready for your business.</span>
+            </h1>
+            <p>
+              Explore our range of Lightning and USB-C cables, car accessories
+              and RFID wallets for wholesale enquiries.
+            </p>
+            <div className={styles.heroActions}>
+              <Link href="/shop" className={styles.button}>
+                Explore Catalogue <ArrowUpRight size={17} aria-hidden="true" />
+              </Link>
+              <Link
+                href="/contact"
+                className={`${styles.button} ${styles.outline}`}
+              >
+                Wholesale Enquiry
+              </Link>
+            </div>
           </div>
-          <div className={styles.heroNote}>
-            <span aria-hidden="true" />
-            <p>Explore the range. Share your requirements.</p>
-          </div>
-        </div>
-        <HeroCarousel />
+        </HeroCarousel>
       </section>
       <section
         id="selected-products"
@@ -65,38 +62,36 @@ export default function Home() {
             View Catalogue <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </div>
-        <p className={styles.assetNote}>
-          Product colours and specifications shown reflect the supplied range.
-          Additional options can be discussed as part of your enquiry.
-        </p>
         <div id="charging-cables" className={styles.productGrid}>
-          {homeProducts.map((product, index) => (
-            <article
-              key={product.id}
-              id={product.id}
-              className={`${styles.productCard} ${index === 3 ? styles.carCard : index === 4 ? styles.walletCard : ""}`}
-            >
-              <div className={styles.cardPhoto}>
-                <ProductImage product={product} />
-                <span className={styles.productNumber} aria-hidden="true">
-                  0{index + 1}
-                </span>
-              </div>
-              <div className={styles.cardDetails}>
-                <div>
-                  <h3>{product.name}</h3>
-                  <p>{product.detail}</p>
+          {homeProducts
+            .filter((product) => product.image)
+            .map((product, index) => (
+              <article
+                key={product.id}
+                id={product.id}
+                className={styles.productCard}
+              >
+                <div className={styles.cardPhoto}>
+                  <ProductImage product={product} />
+                  <span className={styles.productNumber} aria-hidden="true">
+                    0{index + 1}
+                  </span>
                 </div>
-                <Link
-                  href="/contact"
-                  className={styles.enquireLink}
-                  aria-label={`Enquire about ${product.name}`}
-                >
-                  Enquire <ArrowUpRight size={14} aria-hidden="true" />
-                </Link>
-              </div>
-            </article>
-          ))}
+                <div className={styles.cardDetails}>
+                  <div>
+                    <h3>{product.name}</h3>
+                    <p>{product.detail}</p>
+                  </div>
+                  <Link
+                    href="/contact"
+                    className={styles.enquireLink}
+                    aria-label={`Enquire about ${product.name}`}
+                  >
+                    Enquire <ArrowUpRight size={14} aria-hidden="true" />
+                  </Link>
+                </div>
+              </article>
+            ))}
         </div>
       </section>
       <section

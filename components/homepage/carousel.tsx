@@ -1,21 +1,25 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { homeSlides } from "@/lib/homepage-content";
-import { ProductImage } from "./product-image";
 import styles from "./homepage.module.css";
+
 const count = homeSlides.length;
 const panels = [homeSlides[count - 1], ...homeSlides, homeSlides[0]];
-export function HeroCarousel() {
-  const [position, setPosition] = useState(1),
-    [resetting, setResetting] = useState(false),
-    [motion, setMotion] = useState(false),
-    [manualPause, setManualPause] = useState(false),
-    [hovered, setHovered] = useState(false),
-    [focused, setFocused] = useState(false),
-    [visible, setVisible] = useState(true);
+
+export function HeroCarousel({ children }: { children: ReactNode }) {
+  const [position, setPosition] = useState(1);
+  const [resetting, setResetting] = useState(false);
+  const [motion, setMotion] = useState(false);
+  const [manualPause, setManualPause] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [visible, setVisible] = useState(true);
   const touch = useRef<{ x: number; y: number } | null>(null);
   const active = (position - 1 + count) % count;
+
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setMotion(!query.matches);
@@ -28,15 +32,17 @@ export function HeroCarousel() {
       document.removeEventListener("visibilitychange", visibility);
     };
   }, []);
+
   useEffect(() => {
     if (!motion || manualPause || hovered || focused || !visible || resetting)
       return;
     const timer = window.setInterval(
-      () => setPosition((p) => Math.min(p + 1, count + 1)),
+      () => setPosition((current) => Math.min(current + 1, count + 1)),
       5000,
     );
-    return () => clearInterval(timer);
+    return () => window.clearInterval(timer);
   }, [motion, manualPause, hovered, focused, visible, resetting, position]);
+
   useEffect(() => {
     if (!resetting) return;
     let second = 0;
@@ -48,22 +54,25 @@ export function HeroCarousel() {
       cancelAnimationFrame(second);
     };
   }, [resetting]);
+
   function move(direction: number) {
     if (resetting) return;
-    setPosition((p) =>
+    setPosition((current) =>
       motion
-        ? Math.max(0, Math.min(count + 1, p + direction))
-        : ((p - 1 + direction + count) % count) + 1,
+        ? Math.max(0, Math.min(count + 1, current + direction))
+        : ((current - 1 + direction + count) % count) + 1,
     );
   }
+
   function finish() {
     if (position === 0 || position === count + 1) {
       setResetting(true);
       setPosition(position === 0 ? count : 1);
     }
   }
+
   return (
-    <section
+    <div
       className={styles.carousel}
       role="region"
       aria-roledescription="carousel"
@@ -71,16 +80,20 @@ export function HeroCarousel() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocusCapture={() => setFocused(true)}
-      onBlurCapture={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false);
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget))
+          setFocused(false);
       }}
-      onTouchStart={(e) => {
-        touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      onTouchStart={(event) => {
+        touch.current = {
+          x: event.touches[0].clientX,
+          y: event.touches[0].clientY,
+        };
       }}
-      onTouchEnd={(e) => {
+      onTouchEnd={(event) => {
         if (!touch.current) return;
-        const dx = e.changedTouches[0].clientX - touch.current.x,
-          dy = e.changedTouches[0].clientY - touch.current.y;
+        const dx = event.changedTouches[0].clientX - touch.current.x;
+        const dy = event.changedTouches[0].clientY - touch.current.y;
         if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy))
           move(dx < 0 ? 1 : -1);
         touch.current = null;
@@ -89,13 +102,7 @@ export function HeroCarousel() {
         touch.current = null;
       }}
     >
-      <div className={styles.carouselTop}>
-        <span>THE PRODUCT SHOWCASE</span>
-        <span aria-hidden="true">
-          0{active + 1} / 0{count}
-        </span>
-      </div>
-      <div className={styles.carouselWindow}>
+      <div className={styles.carouselWindow} aria-live="off">
         <div
           className={styles.slideTrack}
           style={{
@@ -105,8 +112,11 @@ export function HeroCarousel() {
                 ? "transform 600ms cubic-bezier(.25,.65,.25,1)"
                 : "none",
           }}
-          onTransitionEnd={(e) => {
-            if (e.target === e.currentTarget && e.propertyName === "transform")
+          onTransitionEnd={(event) => {
+            if (
+              event.target === event.currentTarget &&
+              event.propertyName === "transform"
+            )
               finish();
           }}
         >
@@ -119,32 +129,35 @@ export function HeroCarousel() {
               aria-label={`${((index - 1 + count) % count) + 1} of ${count}: ${slide.label}`}
               aria-hidden={position !== index}
             >
-              <div
-                className={`${styles.slideProducts} ${slide.products.length === 1 ? styles.singleProduct : ""}`}
-              >
-                {slide.products.map((product, n) => (
-                  <div className={styles.heroProductSlot} key={product.id}>
-                    <ProductImage
-                      product={product}
-                      priority={index === 1 && n === 0}
-                      sizes={
-                        slide.products.length === 1
-                          ? "(max-width: 760px) 85vw, 45vw"
-                          : "(max-width: 760px) 28vw, 18vw"
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className={styles.slideCaption}>
-                <h2>{slide.label}</h2>
-                <p>{slide.description}</p>
-              </div>
+              <picture>
+                <source media="(max-width: 700px)" srcSet={slide.mobileImage} />
+                <img
+                  src={slide.desktopImage}
+                  alt={position === index ? slide.alt : ""}
+                  width="1774"
+                  height="887"
+                  loading={index === 1 ? "eager" : "lazy"}
+                  fetchPriority={index === 1 ? "high" : "auto"}
+                  style={{ objectPosition: slide.focalPoint }}
+                />
+              </picture>
             </div>
           ))}
         </div>
       </div>
+
+      <div className={styles.heroOverlay} aria-hidden="true" />
+
+      {children}
+
       <div className={styles.carouselControls}>
+        <div className={styles.slideIdentity} aria-hidden="true">
+          <span>0{active + 1}</span>
+          <span>
+            {homeSlides[active].label}
+            <small>{homeSlides[active].description}</small>
+          </span>
+        </div>
         <div className={styles.indicators} aria-label="Choose a product range">
           {homeSlides.map((slide, index) => (
             <button
@@ -164,7 +177,7 @@ export function HeroCarousel() {
             aria-label="Previous product slide"
             onClick={() => move(-1)}
           >
-            <ChevronLeft size={18} aria-hidden="true" />
+            <ChevronLeft size={19} aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -179,9 +192,9 @@ export function HeroCarousel() {
             onClick={() => setManualPause(!manualPause)}
           >
             {manualPause || !motion ? (
-              <Play size={14} aria-hidden="true" />
+              <Play size={15} aria-hidden="true" />
             ) : (
-              <Pause size={14} aria-hidden="true" />
+              <Pause size={15} aria-hidden="true" />
             )}
           </button>
           <button
@@ -189,16 +202,17 @@ export function HeroCarousel() {
             aria-label="Next product slide"
             onClick={() => move(1)}
           >
-            <ChevronRight size={18} aria-hidden="true" />
+            <ChevronRight size={19} aria-hidden="true" />
           </button>
         </div>
       </div>
+
       <span
         className={styles.srOnly}
         aria-live={manualPause || !motion ? "polite" : "off"}
       >
         {homeSlides[active].label}, slide {active + 1} of {count}
       </span>
-    </section>
+    </div>
   );
 }

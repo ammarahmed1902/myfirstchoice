@@ -12,10 +12,16 @@ test("home exposes the approved product groups, no wall-adapter imagery or retai
 }) => {
   await ready(page);
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  const hero = page.getByRole("region", {
+    name: "Everyday accessories. Ready for your business.",
+  });
+  const heroBox = await hero.boundingBox();
+  expect(heroBox?.x).toBe(0);
+  expect(heroBox?.width).toBe(page.viewportSize()?.width);
+  await expect(page.getByText("THE PRODUCT SHOWCASE", { exact: true })).toHaveCount(0);
   for (const name of [
     "4-in-1 Nylon-Braided Cable",
     "USB-C to Lightning Cable",
-    "USB-C to USB-C Cable",
     "Compact Car Charger",
     "Aluminium RFID Card Holder",
   ])
@@ -25,12 +31,10 @@ test("home exposes the approved product groups, no wall-adapter imagery or retai
   expect(await page.locator("main").innerText()).not.toMatch(
     /Samsung|Apple|iPhone|wall adapter|bestseller|£|\$|Sign up|Add to cart/i,
   );
-  await expect(page.locator("main img")).toHaveCount(13);
-  await expect(
-    page.locator(
-      '[role="img"][aria-label^="USB-C to USB-C Cable: actual product photograph"]',
-    ),
-  ).toHaveCount(3);
+  await expect(page.locator("main img")).toHaveCount(11);
+  await expect(page.locator('picture source[srcset^="/images/hero/"]')).toHaveCount(5);
+  await expect(page.locator("main")).toContainText("USB-C to USB-C");
+  await expect(page.getByText(/Product photograph pending/i)).toHaveCount(0);
   await expect(
     page.getByRole("link", {
       name: /account|checkout|registration|shopping cart/i,
