@@ -74,7 +74,7 @@ With a production server running, use `npm run audit:mobile`. Set `CHROME_PATH=/
 
 ## Vercel
 
-Import the GitHub repository with the **Next.js** preset. `vercel.json` sets the framework and build command. Remove any old manually set Vite `dist` output override in the Vercel project settings. Add backend/contact variables securely, then redeploy. Pushes to the connected production branch trigger builds; verify their outcome in Vercel.
+Import the GitHub repository with the **Next.js** preset. `vercel.json` explicitly sets the Next.js framework, build command and `.next` output directory. This overrides the old Vite `dist` output setting and prevents `NEXT_OUTPUT_DIR_MISSING` after the framework migration. Add backend/contact variables securely, then redeploy. Pushes to the connected production branch trigger builds; verify their outcome in Vercel.
 
 ## Structure and deliverables
 
