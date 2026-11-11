@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
-import { Mark } from "@/components/icons";
+import { HomeLogo } from "./logo";
 import { homeCategories } from "@/lib/homepage-content";
 import styles from "./homepage.module.css";
 export function HomeHeader() {
@@ -50,16 +50,7 @@ export function HomeHeader() {
   return (
     <header className={styles.header}>
       <div className={styles.headerInner}>
-        <Link
-          href="/#home"
-          className={styles.logo}
-          aria-label="EBAY 1ST CHOICE LTD · WHOLESALE home"
-        >
-          <Mark />
-          <span>
-            EBAY 1ST CHOICE<small>LTD · WHOLESALE</small>
-          </span>
-        </Link>
+        <HomeLogo />
         <nav className={styles.desktopNav} aria-label="Main navigation">
           <Link href="/#home" aria-current="page">
             Home

@@ -72,3 +72,7 @@ See the accompanying homepage browser tests and locally generated screenshots. A
 - Existing catalogue/search/filters, cart persistence, quote prerequisite states, CSV validation, endpoint protections, account states and SEO/404 routes continue to pass their previous regression cases. They were not redesigned.
 - `homepage-desktop.png` and `homepage-mobile.png` are local review screenshots with **photo-pending panels**, not evidence of final product photography. The previous `lighthouse-summary.json` and earlier design screenshots belong to the previous revision and are not a fresh performance measurement for this homepage.
 - Real-photo composition, connector visibility, material fidelity and supplied-image optimization cannot be verified until the five original product photographs are provided. No replacement stock or generated products were used to make that acceptance criterion appear complete.
+
+### Logo presentation refinement
+
+The original monogram and full company name are retained in a shared `HomeLogo` component. A clearer stacked wordmark separates EBAY, 1ST CHOICE LTD and the wholesale descriptor, with an optical divider, more space around the symbol and responsive sizing. Header and footer use coordinated light/dark treatments. Close-up previews: `logo-light.png`, `logo-dark.png`, `logo-mobile.png`. Production build and all 19 browser cases passed after this refinement; homepage review screenshots were refreshed.

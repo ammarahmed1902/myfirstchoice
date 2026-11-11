@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mark } from "@/components/icons";
+import { HomeLogo } from "./logo";
 import { business } from "@/lib/config";
 import styles from "./homepage.module.css";
 export function HomeFooter() {
@@ -7,16 +7,7 @@ export function HomeFooter() {
     <footer className={styles.footer}>
       <div className={styles.footerMain}>
         <div>
-          <Link
-            href="/#home"
-            className={styles.logo}
-            aria-label="EBAY 1ST CHOICE LTD · WHOLESALE home"
-          >
-            <Mark />
-            <span>
-              EBAY 1ST CHOICE<small>LTD · WHOLESALE</small>
-            </span>
-          </Link>
+          <HomeLogo inverse />
           <p>
             A considered selection of charging cables,
             <br />

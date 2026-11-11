@@ -1,0 +1,152 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 48px;
+  flex-shrink: 0;
+  color: #142333;
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: var(--font-heading), Arial, sans-serif;
+  line-height: 1;
+}
+.brand:hover {
+  color: #142333;
+}
+.symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 13px;
+  border-right: 1px solid #cbd0ca;
+  flex-shrink: 0;
+}
+.symbol svg {
+  display: block;
+  width: 44px;
+  height: 44px;
+}
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 6px;
+}
+.companyPrefix {
+  font-size: 8px;
+  letter-spacing: 2.15px;
+  font-weight: 600;
+  color: #5a6973;
+}
+.name {
+  font-size: 18px;
+  letter-spacing: 0.15px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.legalSuffix {
+  display: inline-block;
+  font-size: 7px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  margin-left: 3px;
+  vertical-align: baseline;
+}
+.descriptor {
+  font-size: 7px;
+  letter-spacing: 1.6px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: #53636d;
+}
+.inverse,
+.inverse:hover {
+  color: #f7f6f2;
+}
+.inverse .symbol {
+  border-right-color: #53606a;
+}
+.inverse .symbol svg {
+  width: 48px;
+  height: 48px;
+}
+.inverse .companyPrefix {
+  color: #d0b681;
+}
+.inverse .name {
+  font-size: 20px;
+}
+.inverse .descriptor {
+  color: #cad4db;
+}
+.brand:focus-visible {
+  outline: 2px solid #142333;
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+.inverse:focus-visible {
+  outline-color: #d0b681;
+}
+@media (max-width: 1200px) {
+  .brand {
+    gap: 11px;
+  }
+  .symbol {
+    padding-right: 11px;
+  }
+  .symbol svg {
+    width: 40px;
+    height: 40px;
+  }
+  .name {
+    font-size: 16px;
+  }
+  .descriptor {
+    font-size: 6.5px;
+    letter-spacing: 1.4px;
+  }
+}
+@media (max-width: 600px) {
+  .brand {
+    gap: 10px;
+    min-height: 46px;
+  }
+  .symbol {
+    padding-right: 10px;
+  }
+  .symbol svg {
+    width: 36px;
+    height: 36px;
+  }
+  .wordmark {
+    gap: 5px;
+  }
+  .companyPrefix {
+    font-size: 7px;
+    letter-spacing: 1.8px;
+  }
+  .name {
+    font-size: 15px;
+    letter-spacing: 0.1px;
+  }
+  .legalSuffix {
+    font-size: 7px;
+    letter-spacing: 0.7px;
+    margin-left: 2px;
+  }
+  .descriptor {
+    font-size: 6.5px;
+    letter-spacing: 1.15px;
+  }
+  .inverse .symbol svg {
+    width: 41px;
+    height: 41px;
+  }
+  .inverse .name {
+    font-size: 17px;
+  }
+  .inverse .descriptor {
+    font-size: 7px;
+    letter-spacing: 1.3px;
+  }
+}
