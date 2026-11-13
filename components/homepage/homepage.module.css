@@ -290,7 +290,9 @@
 }
 .heroCopy .eyebrow,
 .heroCopy h1,
-.heroCopy > p { pointer-events: auto; }
+.heroCopy > p {
+  pointer-events: auto;
+}
 .eyebrow {
   display: block;
   color: #755c32;
@@ -345,10 +347,16 @@
   background: #1423334d;
   backdrop-filter: blur(6px);
 }
-.heroActions .button.outline:hover { background: #ffffff18; }
-.hero .eyebrow { color: #dcc28f; }
+.heroActions .button.outline:hover {
+  background: #ffffff18;
+}
+.hero .eyebrow {
+  color: #dcc28f;
+}
 .hero .button:focus-visible,
-.carousel button:focus-visible { outline-color: #f7f6f2; }
+.carousel button:focus-visible {
+  outline-color: #f7f6f2;
+}
 .carousel {
   position: absolute;
   inset: 0;
@@ -387,7 +395,13 @@
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, #091725ed 0%, #0d1b29c7 34%, #0d1b2957 58%, #0d1b291a 78%),
+    linear-gradient(
+      90deg,
+      #091725ed 0%,
+      #0d1b29c7 34%,
+      #0d1b2957 58%,
+      #0d1b291a 78%
+    ),
     linear-gradient(0deg, #09172594 0%, transparent 34%, #09172521 100%);
 }
 .carouselControls {
@@ -474,7 +488,7 @@
 }
 .containedImage {
   object-fit: contain;
-  padding: 12px;
+  padding: 0;
 }
 .photoPending {
   width: 100%;
@@ -1665,7 +1679,13 @@
   }
   .heroOverlay {
     background:
-      linear-gradient(180deg, #081625f5 0%, #0a1827db 38%, #0b192875 60%, #09172580 100%),
+      linear-gradient(
+        180deg,
+        #081625f5 0%,
+        #0a1827db 38%,
+        #0b192875 60%,
+        #09172580 100%
+      ),
       linear-gradient(90deg, #0917254d, transparent 70%);
   }
   .carouselControls {
@@ -1734,5 +1754,122 @@
   .frame .textLink,
   .frame .footerMain nav a {
     min-height: 44px;
+  }
+}
+
+/* Shared showcase navigation and footer, with readable type at every width. */
+.frame {
+  font-family: var(--font-heading), Arial, sans-serif;
+}
+.frame select,
+.frame textarea {
+  font-family: inherit;
+}
+.catalogueTrigger[aria-current="page"],
+.mobileCatalogueToggle[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-color: #b39762;
+  text-underline-offset: 8px;
+}
+.desktopNav,
+.catalogueTrigger {
+  font-size: 13px;
+}
+.headerEnquiry {
+  font-size: 12px;
+  min-height: 46px;
+}
+.footerMain {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr 1fr;
+  gap: 40px;
+}
+.footerMain > div > p {
+  font-size: 13px;
+  max-width: 330px;
+}
+.footerMain nav {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+.footerMain nav a {
+  font-size: 13px;
+  min-height: 44px;
+  line-height: 1.6;
+}
+.footerContact {
+  font-size: 13px;
+  max-width: none;
+  gap: 10px;
+}
+.footerContact address {
+  line-height: 1.9;
+}
+.footerBottom {
+  font-size: 12px;
+}
+.footerBottom > span:last-child {
+  margin: 0;
+  padding: 0;
+}
+.mobileDrawer {
+  overscroll-behavior: contain;
+}
+@media (max-width: 1200px) {
+  .desktopNav,
+  .catalogueTrigger {
+    font-size: 12px;
+  }
+  .headerEnquiry {
+    font-size: 11px;
+  }
+}
+@media (max-width: 960px) {
+  .footerMain {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footerContact {
+    grid-column: 1/-1;
+    max-width: 550px;
+  }
+  .footerMain nav {
+    min-width: 0;
+  }
+  .footerBottom {
+    font-size: 11px;
+  }
+}
+@media (max-width: 600px) {
+  .footerMain {
+    display: flex;
+    gap: 22px;
+  }
+  .footerMain > div > p {
+    font-size: 13px;
+  }
+  .footerMain nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 20px;
+  }
+  .footerMain nav a {
+    font-size: 13px;
+    min-height: 44px;
+  }
+  .footerContact {
+    font-size: 13px;
+  }
+  .footerBottom {
+    font-size: 11px;
+  }
+  .footerBottom > span:first-child {
+    flex-basis: auto;
+  }
+  .footerBottom > span:last-child {
+    margin: 0;
+    padding: 0;
   }
 }

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { HeroCarousel } from "@/components/homepage/carousel";
-import { ProductImage } from "@/components/homepage/product-image";
-import { homeProducts } from "@/lib/homepage-content";
+import { ProductShowcaseCard } from "@/components/product-showcase-card";
+import { approvedProducts } from "@/lib/homepage-content";
+import { Services } from "@/components/services";
 import styles from "@/components/homepage/homepage.module.css";
 export const metadata = {
   title: { absolute: "My First Choice | Wholesale Accessories" },
@@ -32,7 +33,7 @@ export default function Home() {
             </p>
             <div className={styles.heroActions}>
               <Link href="/shop" className={styles.button}>
-                Explore Catalogue <ArrowUpRight size={17} aria-hidden="true" />
+                View Our Products <ArrowUpRight size={17} aria-hidden="true" />
               </Link>
               <Link
                 href="/contact"
@@ -46,134 +47,84 @@ export default function Home() {
       </section>
       <section
         id="selected-products"
-        className={styles.selected}
+        className="content-section"
         aria-labelledby="selected-heading"
       >
-        <div className={styles.sectionHeading}>
+        <div className="section-intro">
           <div>
-            <span className={styles.eyebrow}>A SELECTION FROM OUR RANGE</span>
-            <h2 id="selected-heading">
-              Everyday essentials.
-              <br className={styles.mobileBreak} /> Considered for your
-              business.
-            </h2>
+            <span className="kicker">A SELECTION FROM OUR RANGE</span>
+            <h2 id="selected-heading">Selected Products</h2>
           </div>
-          <Link href="/shop" className={styles.textLink}>
-            View Catalogue <ArrowUpRight size={16} aria-hidden="true" />
+          <Link href="/shop" className="text-link">
+            View Our Products <ArrowUpRight size={17} aria-hidden="true" />
           </Link>
         </div>
-        <div id="charging-cables" className={styles.productGrid}>
-          {homeProducts
-            .filter((product) => product.image)
-            .map((product, index) => (
-              <article
-                key={product.id}
-                id={product.id}
-                className={styles.productCard}
-              >
-                <div className={styles.cardPhoto}>
-                  <ProductImage product={product} />
-                  <span className={styles.productNumber} aria-hidden="true">
-                    0{index + 1}
-                  </span>
-                </div>
-                <div className={styles.cardDetails}>
-                  <div>
-                    <h3>{product.name}</h3>
-                    <p>{product.detail}</p>
-                  </div>
-                  <Link
-                    href="/contact"
-                    className={styles.enquireLink}
-                    aria-label={`Enquire about ${product.name}`}
-                  >
-                    Enquire <ArrowUpRight size={14} aria-hidden="true" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+        <div className="showcase-grid">
+          {approvedProducts.map((product) => (
+            <ProductShowcaseCard key={product.id} product={product} />
+          ))}
         </div>
       </section>
       <section
-        id="our-business"
-        className={styles.business}
+        className="business-editorial content-section"
         aria-labelledby="business-heading"
       >
-        <div className={styles.businessImage}>
-          <div className={styles.editorialTop}>
-            <span>MY FIRST CHOICE</span>
-            <span>THE ACCESSORY EDIT</span>
-          </div>
-          <div className={styles.businessComposition}>
-            <ProductImage product={homeProducts[0]} />
-            <ProductImage product={homeProducts[4]} />
-          </div>
-          <p>Selected products from the supplied range</p>
-        </div>
-        <div className={styles.businessCopy}>
-          <span className={styles.eyebrow}>OUR BUSINESS</span>
-          <h2 id="business-heading">
-            Accessories for
-            <br />
-            your business.
-          </h2>
-          <p>
-            My First Choice offers a selection of charging cables, car
-            accessories and RFID wallets for wholesale enquiries. Explore our
-            products and contact us to discuss the items and quantities you
-            need.
+        <span className="kicker">OUR BUSINESS</span>
+        <div>
+          <h2 id="business-heading">Support for your next step.</h2>
+          <p className="lead">
+            EBAY 1ST CHOICE LTD works across wholesale supply, third-party
+            logistics (3PL), product sourcing and e-commerce platform
+            management. We work with businesses to discuss their product
+            requirements and the support they need for their operations.
           </p>
-          <Link href="/about" className={styles.textLink}>
-            About My First Choice <ArrowUpRight size={16} aria-hidden="true" />
+          <Link className="text-link" href="/about">
+            About Our Business <ArrowUpRight size={17} aria-hidden="true" />
           </Link>
         </div>
       </section>
-      <section className={styles.how} aria-labelledby="how-heading">
-        <div className={styles.howHeading}>
-          <span className={styles.eyebrow}>A STRAIGHTFORWARD START</span>
-          <h2 id="how-heading">How to enquire.</h2>
+      <section
+        className="content-section services-section"
+        aria-labelledby="services-heading"
+      >
+        <div className="section-intro">
+          <div>
+            <span className="kicker">PRODUCTS &amp; BUSINESS SUPPORT</span>
+            <h2 id="services-heading">What We Do</h2>
+          </div>
         </div>
+        <Services />
+      </section>
+      <section
+        className="content-section enquiry-steps"
+        aria-labelledby="how-heading"
+      >
+        <span className="kicker">A STRAIGHTFORWARD START</span>
+        <h2 id="how-heading">How to Enquire</h2>
         <ol>
           {[
-            ["Explore the range", "Find the products you are interested in."],
-            [
-              "Share your requirements",
-              "Tell us the items and quantities you need.",
-            ],
-            [
-              "Discuss your enquiry",
-              "Contact us to discuss your requirements.",
-            ],
-          ].map(([title, copy], index) => (
-            <li key={title}>
-              <span className={styles.stepNumber}>0{index + 1}</span>
-              <div>
-                <h3>{title}</h3>
-                <p>{copy}</p>
-              </div>
-              {index < 2 && <ArrowRight size={17} aria-hidden="true" />}
+            "Explore our products and services.",
+            "Share your requirements.",
+            "Discuss the next steps with our team.",
+          ].map((text, i) => (
+            <li key={text}>
+              <span>0{i + 1}</span>
+              <p>{text}</p>
             </li>
           ))}
         </ol>
       </section>
-      <section
-        id="wholesale-enquiry"
-        className={styles.invitation}
-        aria-labelledby="enquiry-heading"
-      >
+      <section className="enquiry-banner">
         <div>
-          <span className={styles.eyebrow}>LET’S TALK WHOLESALE</span>
-          <h2 id="enquiry-heading">
-            Let’s discuss your next
-            <br />
-            wholesale enquiry.
-          </h2>
+          <span className="kicker">LET’S TALK BUSINESS</span>
+          <h2>Let’s discuss your business requirements.</h2>
           <p>
-            Tell us which products you need and the quantities you have in mind.
+            Contact us about wholesale supply, 3PL services, product sourcing or
+            e-commerce management.
           </p>
         </div>
-        <Link href="/contact" className={`${styles.button} ${styles.light}`}>
-          Make an Enquiry <ArrowUpRight size={17} aria-hidden="true" />
+        <Link href="/contact" className="action-button light">
+          Make an Enquiry <ArrowUpRight size={18} aria-hidden="true" />
         </Link>
       </section>
     </div>

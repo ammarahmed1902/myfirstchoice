@@ -7,10 +7,12 @@ export type HomeProduct = {
   detail: string;
   image: string | null;
   alt: string;
+  category: "charging-cables" | "car-accessories" | "rfid-wallets";
 };
 export const homeProducts: HomeProduct[] = [
   {
     id: "nylon-braided-cable",
+    category: "charging-cables",
     name: "4-in-1 Nylon-Braided Cable",
     detail: "Braided multi-connector design",
     image: "/images/homepage/4-in-1-braided-cable.webp",
@@ -18,6 +20,7 @@ export const homeProducts: HomeProduct[] = [
   },
   {
     id: "lightning-cable",
+    category: "charging-cables",
     name: "USB-C to Lightning Cable",
     detail: "White · 2 metre",
     image: "/images/homepage/usb-c-to-lightning-cable.webp",
@@ -25,6 +28,7 @@ export const homeProducts: HomeProduct[] = [
   },
   {
     id: "usb-c-cable",
+    category: "charging-cables",
     name: "USB-C to USB-C Cable",
     detail: "USB-C connectors at both ends",
     image: null,
@@ -32,6 +36,7 @@ export const homeProducts: HomeProduct[] = [
   },
   {
     id: "car-accessories",
+    category: "car-accessories",
     name: "Compact Car Charger",
     detail: "USB-A and USB-C ports",
     image: "/images/homepage/compact-car-charger.webp",
@@ -39,6 +44,7 @@ export const homeProducts: HomeProduct[] = [
   },
   {
     id: "rfid-wallets",
+    category: "rfid-wallets",
     name: "Aluminium RFID Card Holder",
     detail: "Accordion-style card case",
     image: "/images/homepage/rfid-card-holder.webp",
@@ -79,23 +85,29 @@ export const homeSlides = [
 ];
 export const homeCategories = [
   {
-    label: "View All Products",
+    label: "All Products",
     href: "/shop",
-    description: "Browse the existing catalogue",
+    description: "Explore our approved range",
   },
   {
     label: "Charging Cables",
-    href: "/#charging-cables",
+    href: "/shop?category=charging-cables",
     description: "Braided, Lightning & USB-C options",
   },
   {
     label: "Car Accessories",
-    href: "/#car-accessories",
+    href: "/shop?category=car-accessories",
     description: "Explore the car charger showcase",
   },
   {
     label: "RFID Wallets",
-    href: "/#rfid-wallets",
+    href: "/shop?category=rfid-wallets",
     description: "Everyday carry essentials",
   },
 ];
+
+export const approvedProducts = homeProducts.filter(
+  (product) => product.image !== null,
+);
+export const productEnquiryHref = (id: string) =>
+  `/contact?product=${encodeURIComponent(id)}`;

@@ -1,192 +1,366 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-test("home is server rendered and the existing catalogue route is preserved", async ({
-  page,
-  request,
-}) => {
-  const response = await request.get("/");
-  expect(response.status()).toBe(200);
-  expect(await response.text()).toContain("Everyday accessories.");
-  await page.goto("/");
+import { mkdir } from "node:fs/promises";
+import { approvedProducts } from "../../lib/homepage-content";
+const paths = ["/", "/shop", "/about", "/contact", "/terms", "/privacy"];
+const widths = [360, 390, 768, 820, 1024, 1280, 1440];
+async function ready(page: import("@playwright/test").Page, path: string) {
+  await page.goto(path);
   await page.waitForFunction(
-    () => document.documentElement.dataset.tradeReady === "true",
+    () => document.documentElement.dataset.showcaseReady === "true",
   );
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Ready for your business.",
-  );
-  await page
-    .getByRole("button", { name: "Our Catalogue", exact: true })
-    .click();
-  await page
-    .getByRole("navigation", { name: "Main navigation", exact: true })
-    .getByRole("link", { name: /View All Products/ })
-    .click();
-  await expect(page).toHaveURL(/\/shop$/);
-  await expect(page.locator(".product-card")).toHaveCount(6);
-});
-test("filters, search and explicit empty states work", async ({ page }) => {
-  await page.goto("/shop");
-  await expect(page.locator(".product-card")).toHaveCount(6);
-  await page
-    .getByRole("combobox", { name: "Category", exact: true })
-    .selectOption("electronics");
-  await expect(page.locator(".product-card")).toHaveCount(3);
-  await page
-    .getByRole("searchbox", { name: "Search catalogue" })
-    .fill("EL-001");
-  await expect(page.locator(".product-card")).toHaveCount(1);
-  await page.getByRole("combobox", { name: "Maximum MOQ" }).selectOption("10");
-  await expect(
-    page.getByRole("heading", { name: "No matching ranges" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Show all ranges" }).click();
-  await expect(page.locator(".product-card")).toHaveCount(6);
-  await expect(page.getByLabel("Maximum unit price (GBP)")).toBeDisabled();
-});
-test("enquiry cart persists, samples remain separate and unconfigured checkout cannot pretend to submit", async ({
-  page,
-}) => {
-  await page.goto("/product/wireless-audio");
-  await expect(page.getByText("MOQ", { exact: true })).toHaveCount(0);
-  await page.getByLabel("Quantity required").fill("12");
-  await page.getByRole("button", { name: "Add to enquiry list" }).click();
-  await page.getByRole("button", { name: /Request a sample/ }).click();
-  await page.goto("/cart");
-  await expect(page.locator(".cart-line")).toHaveCount(2);
-  await page.reload();
-  await expect(
-    page.getByRole("spinbutton", {
-      name: "Quantity for Wireless audio accessories",
-      exact: true,
-    }),
-  ).toHaveValue("12");
-  await page.getByRole("link", { name: /Continue to quote request/ }).click();
-  await expect(
-    page.getByRole("button", { name: /Submit quotation request/ }),
-  ).toBeDisabled();
-  await expect(
-    page.getByText("Quote submission is not connected yet."),
-  ).toBeVisible();
-});
-test("CSV import is atomic, validates unknown references and combines duplicates", async ({
-  page,
-}) => {
-  await page.goto("/quick-order");
-  const input = page.getByLabel("Choose CSV file");
-  await input.setInputFiles({
-    name: "invalid.csv",
-    mimeType: "text/csv",
-    buffer: Buffer.from("sku,quantity\nEL-001,5\nFAKE,2"),
-  });
-  await expect(page.locator(".error[role=alert]")).toContainText(
-    "unknown reference",
-  );
-  await page.goto("/cart");
-  await expect(
-    page.getByRole("heading", { name: "Your next enquiry starts here." }),
-  ).toBeVisible();
-  await page.goto("/quick-order");
-  await page.getByLabel("Choose CSV file").setInputFiles({
-    name: "valid.csv",
-    mimeType: "text/csv",
-    buffer: Buffer.from('\uFEFFsku,quantity\n"EL-001",5\nEL-001,2\nCA-002,3'),
-  });
-  await expect(
-    page.getByRole("status").filter({ hasText: "3 valid lines added" }),
-  ).toBeVisible();
-  await page.goto("/cart");
-  await expect(page.locator(".cart-line")).toHaveCount(2);
-  await expect(
-    page.getByRole("spinbutton", {
-      name: "Quantity for Wireless audio accessories",
-      exact: true,
-    }),
-  ).toHaveValue("7");
-});
-test("private endpoints disclose no prices and enforce origin checks", async ({
-  request,
-}) => {
-  const prices = await request.get("/api/prices");
-  expect(prices.status()).toBe(503);
-  expect(await prices.json()).not.toHaveProperty("tiers");
-  const forged = await request.post("/api/orders", {
-    headers: { origin: "https://attacker.example" },
-    data: { lines: [] },
-  });
-  expect(forged.status()).toBe(403);
-  const session = await request.get("/api/session");
-  expect(await session.json()).toEqual({ configured: false, account: null });
-});
-test("wholesale application and account states are honest without providers", async ({
-  page,
-}) => {
-  await page.goto("/wholesale-application");
-  await expect(
-    page.getByRole("button", { name: /Submit wholesale application/ }),
-  ).toBeDisabled();
-  await page.goto("/account");
-  await expect(
-    page.getByRole("button", { name: "Sign in ↗", exact: true }),
-  ).toBeDisabled();
-  await page
-    .getByRole("button", { name: "Create account", exact: true })
-    .click();
-  await expect(page.getByLabel("Password", { exact: true })).toHaveAttribute(
-    "minlength",
-    "12",
-  );
-});
-test("SEO routes and missing pages return their correct content and HTTP status", async ({
-  request,
-}) => {
-  expect((await request.get("/not-a-real-product")).status()).toBe(404);
-  const sitemap = await request.get("/sitemap.xml");
-  expect(await sitemap.text()).toContain("/product/wireless-audio");
-  expect(await (await request.get("/robots.txt")).text()).toContain(
-    "Disallow: /",
-  );
-  const product = await (await request.get("/product/wireless-audio")).text();
-  expect(product).toContain('rel="canonical"');
-  expect(product).not.toContain('"@type":"Offer"');
-});
-test("mobile navigation, layout and key pages have no WCAG A/AA axe violations", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
-  await page.getByRole("button", { name: "Open navigation menu" }).click();
-  await page
-    .getByRole("navigation", { name: "Mobile navigation" })
-    .getByRole("button", { name: "Our Catalogue" })
-    .click();
-  await page
-    .getByRole("navigation", { name: "Mobile navigation" })
-    .getByRole("link", { name: "View All Products" })
-    .click();
-  await expect(page).toHaveURL(/\/shop$/);
-  await expect(page.getByRole("button", { name: "Open menu" })).toBeVisible();
-  for (const path of [
-    "/",
-    "/shop",
-    "/product/wireless-audio",
-    "/cart",
-    "/checkout",
-    "/wholesale-application",
-    "/account",
-    "/quick-order",
-    "/contact",
-  ]) {
-    await page.goto(path);
-    await page.waitForTimeout(300);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+}
+for (const width of widths)
+  for (const path of paths)
+    test(`${path} at ${width}px: layout, images, semantics and console`, async ({
+      page,
+    }) => {
+      const errors: string[] = [];
+      const failed: string[] = [];
+      page.on("pageerror", (e) => errors.push(e.message));
+      page.on("console", (e) => {
+        if (e.type() === "error") errors.push(e.text());
+      });
+      page.on("response", (r) => {
+        if (r.status() >= 400) failed.push(`${r.status()} ${r.url()}`);
+      });
+      await page.setViewportSize({ width, height: 900 });
+      await ready(page, path);
+      await expect(page.locator("h1")).toHaveCount(1);
+      if (path === "/shop")
+        await expect(
+          page.locator(".product-filters [aria-current=page]"),
+        ).toHaveCount(1);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await page.locator("footer").scrollIntoViewIfNeeded();
+      await page.evaluate(async () => {
+        for (const img of document.images) img.loading = "eager";
+        await Promise.all(
+          [...document.images].map((img) => img.decode().catch(() => {})),
+        );
+      });
+      expect(
+        await page
+          .locator('img:not([alt=""])')
+          .evaluateAll((imgs) =>
+            imgs
+              .filter((i) => !(i as HTMLImageElement).naturalWidth)
+              .map((i) => i.getAttribute("src")),
+          ),
+      ).toEqual([]);
+      await expect(page.locator("footer")).toContainText(
+        "117 Crocketts Road, Birmingham, England, B21 0HS",
+      );
+      await expect(page.locator("footer")).toContainText("17532062");
+      if (width === 390 || width === 1440)
+        expect(
+          (
+            await new AxeBuilder({ page })
+              .withTags([
+                "wcag2a",
+                "wcag2aa",
+                "wcag21a",
+                "wcag22a",
+                "wcag21aa",
+                "wcag22aa",
+              ])
+              .analyze()
+          ).violations,
+        ).toEqual([]);
+      await page.evaluate(() => scrollTo(0, 0));
+      await mkdir("test-results/showcase-screenshots", { recursive: true });
+      await page.screenshot({
+        path: `test-results/showcase-screenshots/${path === "/" ? "home" : path.slice(1)}-${width}.png`,
+        fullPage: true,
+      });
+      expect(errors).toEqual([]);
+      expect(failed).toEqual([]);
+    });
+for (const viewport of [
+  { width: 820, height: 390 },
+  { width: 1440, height: 620 },
+])
+  test(`short viewport navigation and contact ${viewport.width}x${viewport.height}`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await ready(page, "/contact");
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
-      `overflow on ${path}`,
-    ).toBeTruthy();
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
-      .analyze();
-    expect(results.violations, `accessibility on ${path}`).toEqual([]);
+    ).toBe(true);
+    if (viewport.width < 961) {
+      await page.getByRole("button", { name: "Open navigation menu" }).click();
+      await expect(page.getByRole("dialog")).toBeVisible();
+      await page.getByRole("button", { name: "Close navigation menu" }).click();
+    }
+    await page
+      .getByRole("textbox", { name: "Message", exact: false })
+      .fill("Landscape contact form remains usable.");
+    await page
+      .getByRole("textbox", { name: "Message", exact: false })
+      .scrollIntoViewIfNeeded();
+    await expect(
+      page.getByRole("textbox", { name: "Message", exact: false }),
+    ).toBeInViewport();
+  });
+test("desktop dropdown supports hover, keyboard, Escape and current page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await ready(page, "/");
+  const trigger = page.getByRole("button", {
+    name: "Our Products",
+    exact: true,
+  });
+  await trigger.focus();
+  await trigger.press("ArrowDown");
+  await expect(
+    page.getByRole("link", { name: /All Products.*Explore/ }),
+  ).toBeFocused();
+  await page.keyboard.press("End");
+  await expect(
+    page.getByRole("link", { name: /RFID Wallets.*Everyday/ }),
+  ).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await page.locator("h1").click();
+  await trigger.hover();
+  const category = page.getByRole("link", { name: /Car Accessories.*Explore/ });
+  await category.hover();
+  await expect(category).toBeVisible();
+  await category.click();
+  await expect(page).toHaveURL(/shop\?category=car-accessories/);
+  await expect(page.locator(".showcase-card")).toHaveCount(1);
+  await expect(trigger).toHaveAttribute("aria-current", "page");
+});
+test("mobile drawer traps focus, expands, closes after navigation and restores focus", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await ready(page, "/");
+  const opener = page.getByRole("button", { name: "Open navigation menu" });
+  await opener.click();
+  const dialog = page.getByRole("dialog");
+  const close = dialog.getByRole("button", { name: "Close navigation menu" });
+  await expect(close).toBeFocused();
+  expect(await page.evaluate(() => document.body.style.overflow)).toBe(
+    "hidden",
+  );
+  await page.keyboard.press("Shift+Tab");
+  await expect(
+    dialog.getByRole("link", { name: "Wholesale Enquiry", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(close).toBeFocused();
+  await dialog.getByRole("button", { name: "Our Products" }).click();
+  await dialog.getByRole("link", { name: "RFID Wallets", exact: true }).click();
+  await expect(page).toHaveURL(/category=rfid-wallets/);
+  await expect(dialog).not.toBeVisible();
+  expect(await page.evaluate(() => document.body.style.overflow)).not.toBe(
+    "hidden",
+  );
+  await opener.click();
+  await page.keyboard.press("Escape");
+  await expect(opener).toBeFocused();
+});
+test("shared products, category filters and every product enquiry prefill agree", async ({
+  page,
+}) => {
+  await ready(page, "/");
+  await expect(page.locator(".showcase-card")).toHaveCount(4);
+  for (const product of approvedProducts) {
+    await expect(
+      page.getByRole("heading", { name: product.name, exact: true }),
+    ).toBeVisible();
   }
+  await page.goto("/shop");
+  await expect(page.locator(".showcase-card")).toHaveCount(4);
+  for (const product of approvedProducts) {
+    const card = page.locator(`article[id="${product.id}"]`);
+    await expect(card).toContainText(product.detail);
+    await card
+      .getByRole("link", { name: "Enquire About This Product" })
+      .click();
+    await expect(page.getByLabel("Product of interest")).toHaveValue(
+      product.id,
+    );
+    await expect(page.getByLabel("Enquiry type")).toHaveValue(
+      "Wholesale Products",
+    );
+    await page.goto("/shop");
+  }
+  await page
+    .getByRole("navigation", { name: "Product categories" })
+    .getByRole("link", { name: "Charging Cables" })
+    .click();
+  await expect(page.locator(".showcase-card")).toHaveCount(2);
+});
+test("company, service and balance copy is exact and no old commerce links remain", async ({
+  page,
+}) => {
+  for (const path of paths) {
+    await ready(page, path);
+    const text = await page.locator("main").innerText();
+    expect(text).not.toMatch(
+      /wall adapter|Product photograph pending|VAT registered|Founder|Owner|15.day/i,
+    );
+    await expect(
+      page.locator(
+        'a[href="/cart"],a[href="/checkout"],a[href="/account"],a[href="/quick-order"],a[href="/wholesale-application"]',
+      ),
+    ).toHaveCount(0);
+  }
+  await page.goto("/about");
+  await expect(page.locator("main")).toContainText(
+    "Mohammad Ummar Khan is the director of EBAY 1ST CHOICE LTD.",
+  );
+  expect(await page.locator("main").innerText()).not.toMatch(
+    /Lightning|RFID|Car Charger|Nylon/,
+  );
+  await page.goto("/terms");
+  await expect(page.locator("main")).toContainText(
+    "remaining unused balance is £700",
+  );
+  await expect(page.locator("main")).toContainText(
+    "Amounts already used for orders are not included",
+  );
+});
+test("internal links, legacy visits, metadata and 404 response work", async ({
+  page,
+  request,
+}) => {
+  const links = new Set<string>();
+  for (const path of paths) {
+    await ready(page, path);
+    expect((await request.get(path)).status()).toBe(200);
+    for (const href of await page
+      .locator('a[href^="/"]')
+      .evaluateAll((as) => as.map((a) => a.getAttribute("href")!)))
+      links.add(href);
+    await expect(page.locator("title")).not.toBeEmpty();
+  }
+  for (const link of links) {
+    expect((await request.get(link)).status(), link).toBe(200);
+  }
+  for (const path of [
+    "/cart",
+    "/checkout",
+    "/account",
+    "/quick-order",
+    "/wholesale-application",
+    "/product/wireless-audio",
+    "/product/phone-mounts",
+    "/product/mobile-accessories",
+    "/product/automotive-essentials",
+    "/shop/electronics",
+  ]) {
+    const r = await request.get(path);
+    expect(r.status()).toBe(200);
+    expect(r.url()).toMatch(/\/(contact|shop)/);
+  }
+  expect((await request.get("/not-a-real-page")).status()).toBe(404);
+  expect((await request.get("/api/session")).status()).toBe(410);
+  expect(await (await request.get("/robots.txt")).text()).toContain(
+    "Disallow: /",
+  );
+});
+test("server validation, origin and unconfigured/invalid sends never claim success", async ({
+  request,
+}) => {
+  const forged = await request.post("/api/enquiries", {
+    headers: { origin: "https://attacker.example" },
+    data: {},
+  });
+  expect(forged.status()).toBe(403);
+  const invalid = await request.post("/api/enquiries", {
+    headers: { origin: "http://127.0.0.1:3000" },
+    data: { name: "A", email: "invalid" },
+  });
+  expect(invalid.status()).toBe(400);
+  expect(await invalid.json()).not.toHaveProperty("accepted");
+});
+test("contact validation, service fields, failed sends preserve text; duplicate clicks submit once", async ({
+  page,
+}) => {
+  await ready(page, "/contact?product=lightning-cable");
+  const send = page.getByRole("button", { name: "Send Enquiry", exact: true });
+  // This test enables the UI with test-only runtime config; the endpoint is intercepted below.
+  await expect(send).toBeEnabled();
+  await send.click();
+  await expect(
+    page.getByText("Enter your full name.", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Full name")).toBeFocused();
+  await page.getByLabel("Full name").fill("QA Test Buyer");
+  await page.getByLabel("Email address").fill("qa@example.com");
+  await page
+    .getByLabel("Message", { exact: false })
+    .fill("Clearly labelled automated QA enquiry — do not send.");
+  await page.getByLabel("Enquiry type").selectOption("3PL Services");
+  await expect(page.getByLabel("Product of interest")).toHaveCount(0);
+  await page.getByLabel("Enquiry type").selectOption("Wholesale Products");
+  let count = 0;
+  await page.route("**/api/enquiries", async (route) => {
+    count++;
+    await new Promise((r) => setTimeout(r, 250));
+    await route.fulfill({
+      status: 503,
+      json: { error: "Test provider unavailable. Your text has been kept." },
+    });
+  });
+  await send.dblclick({ force: true });
+  await expect(page.getByRole("status")).toContainText(
+    "Test provider unavailable",
+  );
+  expect(count).toBe(1);
+  await expect(page.getByLabel("Message", { exact: false })).toHaveValue(
+    "Clearly labelled automated QA enquiry — do not send.",
+  );
+  await expect(send).toBeEnabled();
+  await page.unroute("**/api/enquiries");
+  await page.route("**/api/enquiries", async (route) => {
+    count++;
+    const data = route.request().postDataJSON();
+    expect(data.email).toBe("qa@example.com");
+    await route.fulfill({
+      status: 202,
+      json: {
+        accepted: true,
+        message:
+          "The email provider has accepted your enquiry. This does not confirm inbox receipt.",
+      },
+    });
+  });
+  await send.click();
+  await expect(page.getByRole("status")).toContainText(
+    "does not confirm inbox receipt",
+  );
+  await expect(
+    page.getByRole("button", { name: "Accepted by email provider" }),
+  ).toBeDisabled();
+  expect(count).toBe(2);
+});
+test("application sets no cookies or browser storage and serves no secret to the browser", async ({
+  page,
+  context,
+}) => {
+  await ready(page, "/contact");
+  expect(await context.cookies()).toEqual([]);
+  expect(
+    await page.evaluate(() => ({
+      local: localStorage.length,
+      session: sessionStorage.length,
+    })),
+  ).toEqual({ local: 0, session: 0 });
+  expect(await page.content()).not.toMatch(
+    /test-only-placeholder|UPSTASH_REDIS_REST_TOKEN|RESEND_API_KEY/,
+  );
 });

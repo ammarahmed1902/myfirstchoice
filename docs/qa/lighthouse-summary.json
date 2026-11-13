@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-12",
+  "fetchTime": "2026-11-12T03:28:54.295Z",
+  "environment": "Local production server; Linux Chromium; mobile simulation",
+  "scores": {
+    "performance": 95,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 69
+  },
+  "metrics": {
+    "first-contentful-paint": "0.9 s",
+    "largest-contentful-paint": "3.0 s",
+    "total-blocking-time": "60 ms",
+    "cumulative-layout-shift": "0",
+    "speed-index": "0.9 s"
+  },
+  "logoLabelAudit": 1,
+  "notes": "Single local lab run. Indexing intentionally disabled pending policy approval. No field performance or deployment claim."
+}

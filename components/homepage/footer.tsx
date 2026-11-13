@@ -9,43 +9,34 @@ export function HomeFooter() {
         <div>
           <HomeLogo inverse />
           <p>
-            A considered selection of charging cables,
-            <br />
-            car accessories and RFID wallets for your business.
+            Wholesale supply, 3PL services, product sourcing
+            <br /> and e-commerce management.
           </p>
         </div>
         <nav aria-label="Footer navigation">
-          <Link href="/#home">Home</Link>
-          <Link href="/shop">Our Catalogue</Link>
+          <Link href="/">Home</Link>
+          <Link href="/shop">Our Products</Link>
           <Link href="/about">About Us</Link>
           <Link href="/contact">Contact Us</Link>
+          <Link href="/terms">Wholesale Terms, Payments &amp; Returns</Link>
+          <Link href="/privacy">Privacy contact</Link>
         </nav>
-        {(business.email || business.whatsapp) && (
-          <div className={styles.footerContact}>
-            {business.email && (
-              <a href={`mailto:${business.email}`}>{business.email}</a>
-            )}
-            {business.whatsapp && (
-              <a
-                href={`https://wa.me/${business.whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                WhatsApp enquiry ↗
-              </a>
-            )}
-          </div>
-        )}
+        <div className={styles.footerContact}>
+          <a href={`mailto:${business.email}`}>{business.email}</a>
+          <strong>{business.name}</strong>
+          <span>Company number: {business.number}</span>
+          <address>
+            <strong>Registered office</strong>
+            <br />
+            {business.address}
+          </address>
+        </div>
       </div>
       <div className={styles.footerBottom}>
         <span>
           © {new Date().getFullYear()} {business.name}
         </span>
-        <div>
-          <Link href="/privacy">Privacy</Link>
-          <Link href="/terms">Trade information</Link>
-        </div>
-        <span>Wholesale product enquiries</span>
+        <span>My First Choice</span>
       </div>
     </footer>
   );

@@ -1,78 +1,64 @@
-import Link from "next/link";
-import { BusinessForm } from "@/components/business-form";
+import { ContactForm } from "@/components/contact-form";
+import { approvedProducts } from "@/lib/homepage-content";
 import { business } from "@/lib/config";
+import { deliveryConfig, deliveryReady } from "@/lib/enquiry-delivery";
+export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Contact & wholesale enquiries",
+  title: "Contact Us",
+  description:
+    "Contact EBAY 1ST CHOICE LTD about wholesale supply, 3PL, product sourcing or e-commerce management.",
   alternates: { canonical: "/contact" },
 };
-export default function Page() {
+export default async function Contact({
+  searchParams,
+}: {
+  searchParams: Promise<{ product?: string }>;
+}) {
+  const { product } = await searchParams;
+  const selected = approvedProducts.some((p) => p.id === product)
+    ? product
+    : "";
   return (
-    <>
-      <div className="page-heading">
-        <span className="eyebrow">LET'S TALK WHOLESALE</span>
-        <h1>What’s next for your business?</h1>
-        <p>Tell us about the electronics or car accessories you need.</p>
-      </div>
-      <section className="section pt-0 two-column">
-        <div>
-          <h2>
-            A good conversation
-            <br />
-            starts with the details.
-          </h2>
+    <section className="content-section">
+      <header className="page-intro">
+        <span className="kicker">LET’S TALK BUSINESS</span>
+        <h1>Contact Us</h1>
+        <p>Tell us about the products and business support you need.</p>
+      </header>
+      <div className="contact-layout">
+        <aside className="contact-details">
+          <h2>A conversation starts here.</h2>
           <p>
-            Include product references, specifications, quantities and your UK
-            delivery postcode. The more detail you share, the clearer the
-            starting point for your quotation.
+            Contact us about wholesale supply, 3PL services, product sourcing or
+            e-commerce management.
           </p>
-          <dl className="spec-list">
+          <dl className="company-details">
             <div>
-              <dt>Business</dt>
+              <dt>Company</dt>
               <dd>{business.name}</dd>
             </div>
             <div>
-              <dt>Trade market</dt>
-              <dd>United Kingdom</dd>
+              <dt>Email</dt>
+              <dd>
+                <a href={`mailto:${business.email}`}>{business.email}</a>
+              </dd>
             </div>
             <div>
-              <dt>Product areas</dt>
-              <dd>Electronics & car accessories</dd>
+              <dt>Registered office</dt>
+              <dd>{business.address}</dd>
             </div>
-            {business.email && (
-              <div>
-                <dt>Email</dt>
-                <dd>
-                  <a href={`mailto:${business.email}`}>{business.email}</a>
-                </dd>
-              </div>
-            )}
-            {business.whatsapp && (
-              <div>
-                <dt>WhatsApp</dt>
-                <dd>
-                  <a
-                    href={`https://wa.me/${business.whatsapp}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Chat with our business ↗
-                  </a>
-                </dd>
-              </div>
-            )}
           </dl>
-          {!business.email && !business.whatsapp && (
-            <div className="notice">
-              Direct contact details have not been published yet. The catalogue
-              and enquiry list are available to explore.
-            </div>
-          )}
-          <Link className="underlined" href="/quick-order">
-            Already have a product list? Use quick order ↗
-          </Link>
-        </div>
-        <BusinessForm kind="enquiry" />
-      </section>
-    </>
+          <p className="small-note">
+            The registered office is a company correspondence address. Visits,
+            collections and returns have not been arranged through this website.
+          </p>
+        </aside>
+        <ContactForm
+          key={selected}
+          product={selected}
+          configured={deliveryReady(deliveryConfig())}
+        />
+      </div>
+    </section>
   );
 }

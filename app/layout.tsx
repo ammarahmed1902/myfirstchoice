@@ -7,25 +7,18 @@ const headingFont = localFont({
   variable: "--font-heading",
   adjustFontFallback: "Arial",
 });
-const bodyFont = localFont({
-  src: "../node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2",
-  weight: "400",
-  display: "swap",
-  variable: "--font-body",
-  adjustFontFallback: "Arial",
-});
 import "./globals.css";
 import { SiteFrame } from "@/components/site-frame";
-import { TradeProvider } from "@/components/trade-provider";
+
 import { business } from "@/lib/config";
 export const metadata: Metadata = {
   metadataBase: new URL(business.siteUrl),
   title: {
-    default: "EBAY 1ST CHOICE LTD | UK Electronics & Car Accessories Wholesale",
+    default: "EBAY 1ST CHOICE LTD | Wholesale & Business Services",
     template: "%s | EBAY 1ST CHOICE LTD",
   },
   description:
-    "Explore wholesale electronics and car accessories for UK retailers and resellers. Apply for a trade account and request a tailored quotation.",
+    "Wholesale supply, 3PL services, product sourcing and e-commerce management. Contact EBAY 1ST CHOICE LTD to discuss your requirements.",
   robots: business.launchReady
     ? { index: true, follow: true }
     : { index: false, follow: false },
@@ -34,7 +27,7 @@ export const metadata: Metadata = {
     locale: "en_GB",
     siteName: business.name,
     title: "Your next wholesale connection",
-    description: "Electronics and car accessories for UK trade buyers.",
+    description: "Wholesale supply and business services.",
   },
   icons: { icon: "/favicon.svg" },
 };
@@ -44,17 +37,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en-GB"
-      className={`${headingFont.variable} ${bodyFont.variable}`}
-    >
+    <html lang="en-GB" className={headingFont.variable}>
       <body>
-        <TradeProvider>
-          <a href="#main-content" className="skip-link">
-            Skip to content
-          </a>
-          <SiteFrame>{children}</SiteFrame>
-        </TradeProvider>
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
+        <SiteFrame>{children}</SiteFrame>
       </body>
     </html>
   );

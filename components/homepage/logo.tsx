@@ -5,9 +5,8 @@ import styles from "./logo.module.css";
 export function HomeLogo({ inverse = false }: { inverse?: boolean }) {
   return (
     <Link
-      href="/#home"
+      href="/"
       className={`${styles.brand} ${inverse ? styles.inverse : ""}`}
-      aria-label="EBAY 1ST CHOICE LTD · Wholesale accessories · Home"
     >
       <span className={styles.symbol}>
         <Mark />
@@ -19,6 +18,7 @@ export function HomeLogo({ inverse = false }: { inverse?: boolean }) {
         </span>
         <span className={styles.descriptor}>WHOLESALE ACCESSORIES</span>
       </span>
+      <span className="sr-only"> Home</span>
     </Link>
   );
 }

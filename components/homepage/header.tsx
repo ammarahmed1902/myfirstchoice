@@ -1,11 +1,16 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
 import { HomeLogo } from "./logo";
 import { homeCategories } from "@/lib/homepage-content";
 import styles from "./homepage.module.css";
 export function HomeHeader() {
+  const pathname = usePathname();
+  useEffect(() => {
+    document.documentElement.dataset.showcaseReady = "true";
+  }, []);
   const [open, setOpen] = useState(false),
     [mobileOpen, setMobileOpen] = useState(false),
     [expanded, setExpanded] = useState(false);
@@ -52,7 +57,7 @@ export function HomeHeader() {
       <div className={styles.headerInner}>
         <HomeLogo />
         <nav className={styles.desktopNav} aria-label="Main navigation">
-          <Link href="/#home" aria-current="page">
+          <Link href="/" aria-current={pathname === "/" ? "page" : undefined}>
             Home
           </Link>
           <div
@@ -111,6 +116,7 @@ export function HomeHeader() {
             <button
               ref={trigger}
               className={styles.catalogueTrigger}
+              aria-current={pathname.startsWith("/shop") ? "page" : undefined}
               aria-expanded={open}
               aria-controls="home-catalogue-dropdown"
               onClick={() => {
@@ -126,7 +132,7 @@ export function HomeHeader() {
                 }
               }}
             >
-              Our Catalogue <ChevronDown size={13} aria-hidden="true" />
+              Our Products <ChevronDown size={13} aria-hidden="true" />
             </button>
             <div
               className={styles.dropdown}
@@ -155,8 +161,18 @@ export function HomeHeader() {
               </ul>
             </div>
           </div>
-          <Link href="/about">About Us</Link>
-          <Link href="/contact">Contact Us</Link>
+          <Link
+            href="/about"
+            aria-current={pathname === "/about" ? "page" : undefined}
+          >
+            About Us
+          </Link>
+          <Link
+            href="/contact"
+            aria-current={pathname === "/contact" ? "page" : undefined}
+          >
+            Contact Us
+          </Link>
         </nav>
         <Link
           href="/contact"
@@ -228,16 +244,21 @@ export function HomeHeader() {
             </button>
           </div>
           <nav aria-label="Mobile navigation">
-            <Link href="/#home" onClick={closeMobile}>
+            <Link
+              href="/"
+              aria-current={pathname === "/" ? "page" : undefined}
+              onClick={closeMobile}
+            >
               Home
             </Link>
             <button
               className={styles.mobileCatalogueToggle}
+              aria-current={pathname.startsWith("/shop") ? "page" : undefined}
               aria-expanded={expanded}
               aria-controls="mobile-home-categories"
               onClick={() => setExpanded(!expanded)}
             >
-              Our Catalogue <ChevronDown size={17} aria-hidden="true" />
+              Our Products <ChevronDown size={17} aria-hidden="true" />
             </button>
             <ul
               id="mobile-home-categories"
@@ -253,10 +274,18 @@ export function HomeHeader() {
                 </li>
               ))}
             </ul>
-            <Link href="/about" onClick={closeMobile}>
+            <Link
+              href="/about"
+              aria-current={pathname === "/about" ? "page" : undefined}
+              onClick={closeMobile}
+            >
               About Us
             </Link>
-            <Link href="/contact" onClick={closeMobile}>
+            <Link
+              href="/contact"
+              aria-current={pathname === "/contact" ? "page" : undefined}
+              onClick={closeMobile}
+            >
               Contact Us
             </Link>
           </nav>

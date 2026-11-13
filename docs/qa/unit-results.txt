@@ -1,0 +1,43 @@
+
+> ebay-1st-choice-wholesale@2.0.0 test
+> node --import tsx --test tests/*.test.ts
+
+▶ PostgreSQL row-level security protects pricing, approval and customer requests
+  ✔ anonymous role cannot read private prices (4.061672ms)
+  ✔ pending buyers see no price rows and cannot approve themselves (5.246765ms)
+  ✔ missing enquiry fields cannot bypass SQL validation (2.601364ms)
+  ✔ application is stored privately without granting approval (5.86816ms)
+  ✔ trusted admin approval unlocks price rows for that buyer (1.670854ms)
+  ✔ approved buyer can save a quote; another buyer cannot read it (6.910899ms)
+  ✔ direct RPC calls cannot insert forged product refs or quantities (3.84149ms)
+  ✔ database enforces per-buyer quote rate limits (7.819356ms)
+✔ PostgreSQL row-level security protects pricing, approval and customer requests (2656.956641ms)
+✔ invalid fields, header injection, unknown products and honeypot never call delivery (85.557349ms)
+✔ cross-origin, malformed, non-JSON and oversized bodies are rejected (1.649002ms)
+✔ missing provider, unverified-style sender or absent shared limiter fails closed (1.213666ms)
+✔ email fixes the recipient, validates Reply-To, escapes HTML and includes the selected product (3.067657ms)
+✔ identical submissions are accepted once and reused across requests (2.209204ms)
+✔ a pending duplicate cannot send twice (1.644365ms)
+✔ shared hourly limiter and unavailable Redis prevent sending (0.941797ms)
+✔ provider rejection returns failure; retry reuses the idempotency key (1.969164ms)
+✔ optional fields may be empty and service enquiries omit product fields (0.316737ms)
+✔ local origin validation uses the request Host when the framework normalises its internal URL (0.914797ms)
+✔ unknown SKUs, fractional and excessive quantities cannot be ordered (3.087147ms)
+✔ a sample cannot be requested for a range without sample enquiries (0.207622ms)
+✔ repeated references combine, but samples remain separate (1.493909ms)
+✔ combined quantities cannot bypass the maximum (1.769453ms)
+✔ empty carts and missing delivery details fail validation (4.532451ms)
+✔ applications need usable business information (1.192144ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3262.262305
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+npm notice To update run: npm install -g npm@12.2.2
+npm notice
