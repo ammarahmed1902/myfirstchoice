@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Mark, Arrow } from "./icons";
+import { Arrow } from "./icons";
+import { HomeLogo } from "./homepage/logo";
 import { business } from "@/lib/config";
 export function Footer() {
   return (
@@ -18,12 +19,7 @@ export function Footer() {
       <footer>
         <div className="footer-grid">
           <div>
-            <Link href="/" className="brand">
-              <Mark />
-              <span>
-                EBAY 1ST CHOICE<small>LTD · WHOLESALE</small>
-              </span>
-            </Link>
+            <HomeLogo inverse />
             <p>
               Electronics and car accessories.
               <br />A clear starting point for your next range.

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X, Search, UserRound, ClipboardList } from "lucide-react";
-import { Mark, Arrow } from "./icons";
+import { Arrow } from "./icons";
+import { HomeLogo } from "./homepage/logo";
 import { useTrade } from "./trade-provider";
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -19,16 +20,7 @@ export function Header() {
       </div>
       <header className="site-header">
         <div className="header-main">
-          <Link
-            href="/"
-            className="brand"
-            aria-label="EBAY 1ST CHOICE LTD · WHOLESALE home"
-          >
-            <Mark />
-            <span>
-              EBAY 1ST CHOICE<small>LTD · WHOLESALE</small>
-            </span>
-          </Link>
+          <HomeLogo />
           <form action="/shop" className="header-search">
             <Search size={18} aria-hidden="true" />
             <input
