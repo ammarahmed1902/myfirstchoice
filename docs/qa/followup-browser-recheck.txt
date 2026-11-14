@@ -1,0 +1,15 @@
+
+> ebay-1st-choice-wholesale@2.0.0 test:browser
+> playwright test --grep required field whitespace|internal links, legacy
+
+[WebServer] (node:43493) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:43510) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/browser/qa-regressions.spec.ts:35:1 › required field whitespace, message limits and keyboard errors never send invalid data (1.5s)
+  ✓  2 tests/browser/wholesale.spec.ts:236:1 › internal links, legacy visits, metadata and 404 response work (1.5s)
+
+  2 passed (4.6s)

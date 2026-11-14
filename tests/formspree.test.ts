@@ -105,3 +105,24 @@ test("provider error text and private destination addresses are never passed thr
   );
   assert.deepEqual(result.fields.email, ["Please check your email address."]);
 });
+
+test("message boundaries and whitespace-only required values are validated", () => {
+  for (const message of [" ".repeat(20), "x".repeat(9), "x".repeat(4001)])
+    assert.equal(
+      contactSchema.safeParse({ ...details, message }).success,
+      false,
+    );
+  for (const message of ["x".repeat(10), "x".repeat(4000)])
+    assert.equal(
+      contactSchema.safeParse({ ...details, message }).success,
+      true,
+    );
+  assert.equal(
+    contactSchema.safeParse({ ...details, name: "   " }).success,
+    false,
+  );
+  assert.equal(
+    contactSchema.safeParse({ ...details, email: "   " }).success,
+    false,
+  );
+});

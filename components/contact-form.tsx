@@ -231,7 +231,7 @@ export function ContactForm({
         <p className="privacy-note">
           We use these details to respond to your enquiry. Formspree processes
           the submission. No marketing permission is requested. See{" "}
-          <Link href="/privacy">website privacy information and contact</Link>.
+          <Link href="/privacy">Privacy Information</Link>.
         </p>
         <button
           type="submit"

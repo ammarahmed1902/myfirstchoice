@@ -10,7 +10,7 @@ All files are stored locally; the homepage does not hotlink marketplace gallerie
 | Aluminium RFID card holder | Owner-supplied product image; listing reference `https://www.ebay.co.uk/itm/193486861995` | `/images/homepage/rfid-card-holder.webp` | `/images/hero/rfid-card-holder-desktop.webp` | `/images/hero/rfid-card-holder-mobile.webp` | Used |
 | White USB-C to USB-C cable | Product-page reference only: `https://www.amazon.co.uk/dp/B0DCBPXF8Y` | — | — | — | **Missing approved source photograph** |
 
-The cable banners therefore show the approved braided multi-connector cable and USB-C to Lightning cable. The interface still names USB-C to USB-C as part of the intended range, but no USB-C to USB-C product image is shown or fabricated. Add an owned or reuse-approved high-resolution source photograph before claiming that visual requirement is complete.
+The cable banners therefore show the approved braided multi-connector cable and USB-C to Lightning cable. Public hero/category captions now describe only the pictured braided and USB-C-to-Lightning products; no USB-C-to-USB-C image is shown or fabricated. Add an owned or reuse-approved high-resolution source photograph before claiming that visual requirement is complete.
 
 The supplied car-charger photograph is black even though one accompanying message described it as white. The scenes preserve the supplied black product; no white variant was invented.
 

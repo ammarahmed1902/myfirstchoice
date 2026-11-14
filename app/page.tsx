@@ -28,7 +28,7 @@ export default function Home() {
               <span>Ready for your business.</span>
             </h1>
             <p>
-              Explore our range of Lightning and USB-C cables, car accessories
+              Explore our range of braided and Lightning cables, car accessories
               and RFID wallets for wholesale enquiries.
             </p>
             <div className={styles.heroActions}>

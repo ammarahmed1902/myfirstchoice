@@ -157,7 +157,7 @@ export function BusinessForm({ kind }: { kind: "application" | "enquiry" }) {
           <span>
             I have read the{" "}
             <Link href="/privacy" className="underlined">
-              privacy information
+              Privacy Information
             </Link>{" "}
             and understand that my business details will be used to handle this
             request.

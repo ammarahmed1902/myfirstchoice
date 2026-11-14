@@ -55,8 +55,10 @@ export const homeSlides = [
   {
     id: "cables",
     label: "Charging Cables",
-    description: "Lightning · USB-C to USB-C · Braided options",
-    products: homeProducts.slice(0, 3),
+    description: "Braided multi-connector · USB-C to Lightning",
+    products: homeProducts
+      .slice(0, 3)
+      .filter((product) => product.image !== null),
     desktopImage: "/images/hero/cables-desktop.webp",
     mobileImage: "/images/hero/cables-mobile.webp",
     alt: "Braided multi-connector and white USB-C to Lightning cables arranged on a deep navy studio surface",
@@ -92,7 +94,7 @@ export const homeCategories = [
   {
     label: "Charging Cables",
     href: "/shop?category=charging-cables",
-    description: "Braided, Lightning & USB-C options",
+    description: "Braided & Lightning cables",
   },
   {
     label: "Car Accessories",

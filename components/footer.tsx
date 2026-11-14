@@ -55,7 +55,7 @@ export function Footer() {
                 WhatsApp <Arrow />
               </a>
             )}
-            <Link href="/privacy">Privacy</Link>
+            <Link href="/privacy">Privacy Information</Link>
             <Link href="/terms">Trade information</Link>
           </div>
         </div>

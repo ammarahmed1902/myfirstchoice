@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { mkdir } from "node:fs/promises";
 import { approvedProducts } from "../../lib/homepage-content";
 const paths = ["/", "/shop", "/about", "/contact", "/terms", "/privacy"];
-const widths = [360, 390, 768, 820, 1024, 1280, 1440];
+const widths = [360, 390, 768, 820, 1024, 1366, 1440];
 async function ready(page: import("@playwright/test").Page, path: string) {
   await page.goto(path);
   await page.waitForFunction(
@@ -245,7 +245,7 @@ test("internal links, legacy visits, metadata and 404 response work", async ({
       .locator('a[href^="/"]')
       .evaluateAll((as) => as.map((a) => a.getAttribute("href")!)))
       links.add(href);
-    await expect(page.locator("title")).not.toBeEmpty();
+    await expect(page.locator("head title")).not.toBeEmpty();
   }
   for (const link of links) {
     expect((await request.get(link)).status(), link).toBe(200);

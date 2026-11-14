@@ -1,3 +1,5 @@
+> Current follow-up: see QA_POLICY_DRAFT.md for the latest 1 November → 15 November owner example and the precise remaining reporting/retention questions. Privacy links and the page now consistently use “Privacy Information”. Formspree, hosting and email services are the current suppliers; older Resend/Upstash proposals below are historical.
+
 > Update, 14 November 2026: Contact Us now uses Formspree form `myewknly` directly. Earlier Resend/Upstash descriptions below are historical and superseded. See [current email integration notes](../EMAIL_SETUP.md). Confirm Formspree recipient, notification settings, retention and transfer terms during review.
 
 # Policy decisions requiring business confirmation

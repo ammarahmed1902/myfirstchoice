@@ -19,7 +19,7 @@ export function HomeFooter() {
           <Link href="/about">About Us</Link>
           <Link href="/contact">Contact Us</Link>
           <Link href="/terms">Wholesale Terms, Payments &amp; Returns</Link>
-          <Link href="/privacy">Privacy contact</Link>
+          <Link href="/privacy">Privacy Information</Link>
         </nav>
         <div className={styles.footerContact}>
           <Link href="/contact#enquiry-form">Contact Us</Link>

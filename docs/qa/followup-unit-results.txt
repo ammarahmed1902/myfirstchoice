@@ -1,0 +1,40 @@
+
+> ebay-1st-choice-wholesale@2.0.0 test
+> node --import tsx --test tests/*.test.ts
+
+▶ PostgreSQL row-level security protects pricing, approval and customer requests
+  ✔ anonymous role cannot read private prices (3.428062ms)
+  ✔ pending buyers see no price rows and cannot approve themselves (5.513395ms)
+  ✔ missing enquiry fields cannot bypass SQL validation (3.118831ms)
+  ✔ application is stored privately without granting approval (7.28374ms)
+  ✔ trusted admin approval unlocks price rows for that buyer (1.569155ms)
+  ✔ approved buyer can save a quote; another buyer cannot read it (6.597959ms)
+  ✔ direct RPC calls cannot insert forged product refs or quantities (2.872315ms)
+  ✔ database enforces per-buyer quote rate limits (6.577389ms)
+✔ PostgreSQL row-level security protects pricing, approval and customer requests (2339.35234ms)
+✔ Formspree payload fixes endpoint, subject and website identity; preserves every enquiry field (2.991091ms)
+✔ service enquiry does not include stale product fields (0.285755ms)
+✔ required fields, invalid email and header injection are rejected (0.77336ms)
+✔ provider validation errors map back to visible form fields (0.802074ms)
+✔ rate limits and unexpected provider failures give useful preserved-input messages (0.135762ms)
+✔ provider error text and private destination addresses are never passed through (0.186057ms)
+✔ message boundaries and whitespace-only required values are validated (0.648145ms)
+✔ unknown SKUs, fractional and excessive quantities cannot be ordered (2.764334ms)
+✔ a sample cannot be requested for a range without sample enquiries (0.289381ms)
+✔ repeated references combine, but samples remain separate (1.123272ms)
+✔ combined quantities cannot bypass the maximum (0.67232ms)
+✔ empty carts and missing delivery details fail validation (0.735254ms)
+✔ applications need usable business information (0.668505ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2693.092421
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+npm notice To update run: npm install -g npm@12.2.2
+npm notice

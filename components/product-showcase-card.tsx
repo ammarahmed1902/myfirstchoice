@@ -17,7 +17,6 @@ export function ProductShowcaseCard({
       <div className="showcase-image">
         <ProductImage product={product} />
       </div>
-      {catalogue && <span className="product-ref">Ref: {product.id}</span>}
       <Heading>{product.name}</Heading>
       <p>{product.detail}</p>
       <Link

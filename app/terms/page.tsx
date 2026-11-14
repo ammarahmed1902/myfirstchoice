@@ -80,6 +80,15 @@ export default function Terms() {
         Report non-delivery so it can be discussed separately from returning a
         physical item.
       </p>
+      <h2>Authorised physical returns</h2>
+      <p>
+        Use{" "}
+        <Link href="/contact?reason=order-issue#enquiry-form">Contact Us</Link>{" "}
+        before sending an item back. We will provide the return address in
+        response to your message and discuss the next steps. Do not send a
+        return to the registered office unless it
+        has been specifically confirmed as the returns address for your order.
+      </p>
     </article>
   );
 }

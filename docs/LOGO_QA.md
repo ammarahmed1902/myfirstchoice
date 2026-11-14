@@ -1,3 +1,5 @@
+> Superseded for the current header presentation by [14 November QA](QA_FOLLOWUP_2026-11-14.md) and [asset notes](QA_ASSET_AND_LOGO_NOTES.md). The full original SVG is preserved; the header now uses the documented compact presentation.
+
 # Supplied logo replacement
 
 The original uploaded My_First_Choice_Logo.svg is stored unchanged at public/assets/my-first-choice-logo.svg and used by the shared HomeLogo component in the header and footer. The legacy header/footer components also reference HomeLogo; the old generated monogram and separate wordmark markup were removed.

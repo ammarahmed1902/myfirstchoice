@@ -255,7 +255,7 @@ export function Account() {
           <p className="small-text muted">
             By creating an account, you acknowledge the{" "}
             <Link href="/privacy" className="underlined">
-              privacy information
+              Privacy Information
             </Link>
             .
           </p>
