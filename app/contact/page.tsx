@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
 import { approvedProducts } from "@/lib/homepage-content";
 import { business } from "@/lib/config";
@@ -11,9 +12,15 @@ export const metadata = {
 export default async function Contact({
   searchParams,
 }: {
-  searchParams: Promise<{ product?: string }>;
+  searchParams: Promise<{ product?: string; reason?: string }>;
 }) {
-  const { product } = await searchParams;
+  const { product, reason } = await searchParams;
+  const initialMessage =
+    reason === "privacy"
+      ? "Privacy request:\n"
+      : reason === "order-issue"
+        ? "Order issue:\nOrder or invoice reference: \nDetails: "
+        : "";
   const selected = approvedProducts.some((p) => p.id === product)
     ? product
     : "";
@@ -37,9 +44,9 @@ export default async function Contact({
               <dd>{business.name}</dd>
             </div>
             <div>
-              <dt>Email</dt>
+              <dt>Enquiries</dt>
               <dd>
-                <a href={`mailto:${business.email}`}>{business.email}</a>
+                <Link href="#enquiry-form">Contact Us</Link>
               </dd>
             </div>
             <div>
@@ -52,7 +59,11 @@ export default async function Contact({
             collections and returns have not been arranged through this website.
           </p>
         </aside>
-        <ContactForm key={selected} product={selected} />
+        <ContactForm
+          key={`${selected}:${reason || ""}`}
+          product={selected}
+          initialMessage={initialMessage}
+        />
       </div>
     </section>
   );

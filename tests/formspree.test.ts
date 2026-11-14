@@ -74,17 +74,34 @@ test("provider validation errors map back to visible form fields", () => {
     422,
   );
   assert.deepEqual(failure.fields, {
-    email: ["Enter a valid address."],
-    quantity: ["Invalid quantity."],
+    email: ["Please check your email address."],
+    quantity: ["Please enter a valid whole quantity."],
   });
   assert.match(failure.message, /information has been kept/);
 });
 test("rate limits and unexpected provider failures give useful preserved-input messages", () => {
   assert.match(formspreeErrors({}, 429).message, /wait/);
-  assert.match(formspreeErrors({}, 503).message, /email us directly/);
+  assert.match(formspreeErrors({}, 503).message, /try again/);
   assert.deepEqual(
     formspreeErrors({ errors: [{ message: "Form is not verified." }] }, 403)
       .fields,
     {},
   );
+});
+
+test("provider error text and private destination addresses are never passed through", () => {
+  const result = formspreeErrors(
+    {
+      error: "Private destination private-inbox@example.com",
+      errors: [
+        { field: "email", message: "Settings for private-inbox@example.com" },
+      ],
+    },
+    422,
+  );
+  assert.doesNotMatch(
+    JSON.stringify(result),
+    /private-inbox|Settings|Private destination/,
+  );
+  assert.deepEqual(result.fields.email, ["Please check your email address."]);
 });

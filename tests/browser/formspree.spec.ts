@@ -123,7 +123,7 @@ test("invalid email, empty required fields and honeypot never submit", async ({
     .evaluate((el: HTMLInputElement) => (el.value = "bot"));
   await page.getByRole("button", { name: "Send Enquiry", exact: true }).click();
   await expect(page.locator(".submission-notice")).toContainText(
-    "could not be accepted",
+    "could not be submitted",
   );
   expect(requests).toBe(0);
 });

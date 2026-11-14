@@ -21,7 +21,7 @@ Cloud environment شائع کرنا، Git میں تبدیلیاں commit/push ک
 
 ## انکوائری ای میل
 
-`ebayecommerce1947@gmail.com` بیک اینڈ کا مقررہ وصول کنندہ ہے۔ لیکن صرف وصول کنندہ لکھنا ای میل بھیجنے کے لیے کافی نہیں۔ موجودہ endpoint Resend اور shared rate limiting کے لیے Upstash استعمال کرنے کے لیے تیار ہے؛ متعلقہ چار environment variables اس cloud process میں موجود نہیں۔ کوئی حقیقی میل یا inbox receipt اس کام میں ثابت نہیں ہوئی۔
+`the verified Formspree notification recipient` بیک اینڈ کا مقررہ وصول کنندہ ہے۔ لیکن صرف وصول کنندہ لکھنا ای میل بھیجنے کے لیے کافی نہیں۔ موجودہ endpoint Resend اور shared rate limiting کے لیے Upstash استعمال کرنے کے لیے تیار ہے؛ متعلقہ چار environment variables اس cloud process میں موجود نہیں۔ کوئی حقیقی میل یا inbox receipt اس کام میں ثابت نہیں ہوئی۔
 
 ### بغیر email API کے آپشن
 

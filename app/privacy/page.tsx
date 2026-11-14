@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { business } from "@/lib/config";
 export const metadata = {
   title: "Website privacy information & contact",
@@ -17,8 +18,10 @@ export default function PrivacyContact() {
       <h2>Contact us about your information</h2>
       <p>
         For questions about the use of your personal information or to make a
-        privacy request, email{" "}
-        <a href={`mailto:${business.email}`}>{business.email}</a>.
+        privacy request, use our{" "}
+        <Link href="/contact?reason=privacy#enquiry-form">Contact Us</Link>{" "}
+        form. Select General Enquiry and describe the information or rights
+        request in your message.
       </p>
       <h2>The website enquiry form</h2>
       <p>
@@ -31,13 +34,16 @@ export default function PrivacyContact() {
         When you submit the form, your enquiry is sent directly to Formspree for
         processing and email notification to the business. A success message
         means Formspree has accepted the submission; it does not confirm inbox
-        receipt. You can also email the company directly.
+        receipt. The same Contact Us form accepts privacy and information
+        requests.
       </p>
       <h2>Retention</h2>
       <p>
         Business enquiry correspondence is retained for six months. For a
         deletion request or questions about your correspondence, contact the
-        company at the email address above.
+        company through the{" "}
+        <Link href="/contact?reason=privacy#enquiry-form">Contact Us</Link>{" "}
+        form.
       </p>
       <h2>Website technology</h2>
       <p>

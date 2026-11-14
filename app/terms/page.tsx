@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { business } from "@/lib/config";
 export const metadata = {
   title: "Wholesale Terms, Payments & Returns",
@@ -65,18 +66,19 @@ export default function Terms() {
       </p>
       <h2>Damaged items</h2>
       <p>
-        If an item arrives damaged, contact us at{" "}
-        <a href={`mailto:${business.email}`}>{business.email}</a> with your
-        order or invoice reference and details of the issue. Contact us to
-        discuss the next steps before sending an item back. The registered
-        office is not a confirmed returns address.
+        If an item arrives damaged, use our{" "}
+        <Link href="/contact?reason=order-issue#enquiry-form">Contact Us</Link>{" "}
+        form with your order or invoice reference and details of the issue.
+        Contact us to discuss the next steps before sending an item back. The
+        registered office is not a confirmed returns address.
       </p>
       <h2>Orders that have not arrived</h2>
       <p>
-        If your order has not arrived, contact us at{" "}
-        <a href={`mailto:${business.email}`}>{business.email}</a> with your
-        order or invoice reference and details of the issue. Report non-delivery
-        so it can be discussed separately from returning a physical item.
+        If your order has not arrived, use our{" "}
+        <Link href="/contact?reason=order-issue#enquiry-form">Contact Us</Link>{" "}
+        form with your order or invoice reference and details of the issue.
+        Report non-delivery so it can be discussed separately from returning a
+        physical item.
       </p>
     </article>
   );

@@ -11,7 +11,13 @@ import {
   formspreeErrors,
 } from "@/lib/formspree";
 type Errors = Record<string, string[] | undefined>;
-export function ContactForm({ product = "" }: { product?: string }) {
+export function ContactForm({
+  product = "",
+  initialMessage = "",
+}: {
+  product?: string;
+  initialMessage?: string;
+}) {
   const [type, setType] = useState(
     product ? "Wholesale Products" : "General Enquiry",
   );
@@ -36,7 +42,7 @@ export function ContactForm({ product = "" }: { product?: string }) {
     }
     if (parsed.data.website) {
       setNotice(
-        "Your enquiry could not be accepted. Please email us directly.",
+        "Your enquiry could not be submitted. Please try again using the Contact Us form.",
       );
       return;
     }
@@ -73,13 +79,11 @@ export function ContactForm({ product = "" }: { product?: string }) {
           );
       } else {
         setAccepted(true);
-        setNotice(
-          "Thank you! Your enquiry has been submitted.",
-        );
+        setNotice("Thank you! Your enquiry has been submitted.");
       }
     } catch {
       setNotice(
-        "We could not confirm provider acceptance. Your text has been kept. Please try again later or email us directly.",
+        "Your enquiry could not be confirmed. Your entered information has been kept. Please try again later using the Contact Us form.",
       );
     } finally {
       lock.current = false;
@@ -99,6 +103,7 @@ export function ContactForm({ product = "" }: { product?: string }) {
   });
   return (
     <form
+      id="enquiry-form"
       className="enquiry-form"
       ref={form}
       onSubmit={submit}
@@ -208,6 +213,7 @@ export function ContactForm({ product = "" }: { product?: string }) {
           Message *
           <textarea
             name="message"
+            defaultValue={initialMessage}
             rows={6}
             required
             minLength={10}
@@ -242,6 +248,12 @@ export function ContactForm({ product = "" }: { product?: string }) {
         className={notice ? "submission-notice" : undefined}
       >
         {notice}
+        {notice && !accepted && (
+          <>
+            {" "}
+            <Link href="#enquiry-form">Contact Us</Link>
+          </>
+        )}
       </div>
       {accepted && (
         <button

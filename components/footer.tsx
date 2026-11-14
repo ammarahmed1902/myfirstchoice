@@ -45,9 +45,7 @@ export function Footer() {
             <Link href="/contact">
               Contact our team <Arrow />
             </Link>
-            {business.email && (
-              <a href={`mailto:${business.email}`}>{business.email}</a>
-            )}
+            <Link href="/contact#enquiry-form">Contact Us</Link>
             {business.whatsapp && (
               <a
                 href={`https://wa.me/${business.whatsapp}`}

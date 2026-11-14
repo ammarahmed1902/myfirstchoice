@@ -318,7 +318,7 @@ test("contact validation, service fields, failed sends preserve text; duplicate 
   });
   await send.dblclick({ force: true });
   await expect(page.getByRole("status")).toContainText(
-    "Test provider unavailable",
+    "Your enquiry could not be submitted.",
   );
   expect(count).toBe(1);
   await expect(page.getByLabel("Message", { exact: false })).toHaveValue(
@@ -334,8 +334,7 @@ test("contact validation, service fields, failed sends preserve text; duplicate 
       status: 202,
       json: {
         ok: true,
-        message:
-          "Thank you! Your enquiry has been submitted.",
+        message: "Thank you! Your enquiry has been submitted.",
       },
     });
   });

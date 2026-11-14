@@ -59,7 +59,7 @@ Desktop captures are 1440px; mobile captures are 390px. Contact screenshots show
 
 ## Email setup and test status
 
-See [EMAIL_SETUP.md](EMAIL_SETUP.md). Required server-only configuration is RESEND_API_KEY, ENQUIRY_FROM_EMAIL (a plain address on a Resend-verified sending domain), UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN. The recipient is fixed at ebayecommerce1947@gmail.com. The receiving Gmail address is not verification of a sending domain, and its normal password must not be used.
+See [EMAIL_SETUP.md](EMAIL_SETUP.md). Required server-only configuration is RESEND_API_KEY, ENQUIRY_FROM_EMAIL (a plain address on a Resend-verified sending domain), UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN. The recipient is fixed at the verified Formspree notification recipient. The receiving Gmail address is not verification of a sending domain, and its normal password must not be used.
 
 Restricted cloud outbound access must permit api.resend.com and the selected Upstash REST hostname before live testing. No production sender, API key or Redis account was supplied. Provider acceptance: **not observed live**. Inbox receipt: **not observed or confirmed**. The automatic fake-provider tests and intercepted browser success state do not establish either outcome.
 

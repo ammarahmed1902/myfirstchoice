@@ -16,7 +16,7 @@ Fixed notification subject: **My First Choice — New Website Enquiry**. The web
 | Validation | Empty required fields, invalid email, quantity validation and honeypot checked |
 | Payload | All entered fields, product name/reference, subject, website branding and customer Reply-To checked |
 | Responsive/accessibility | Existing all-page seven-width sweep passed; Contact Us inspected at mobile/desktop with tablet screenshot captured; axe scans passed at 390 and 1440 |
-| Notification recipient | Account owner confirmed ebayecommerce1947@gmail.com is verified/enabled in Formspree; not independently inspected by the assistant |
+| Notification recipient | Account owner confirmed the verified Formspree notification recipient is verified/enabled in Formspree; not independently inspected by the assistant |
 | Actual provider acceptance | Not tested: cloud proxy blocks Formspree with 403 |
 | Actual inbox receipt | Not observed or confirmed |
 | Git push / Vercel deployment | Not performed in this task |

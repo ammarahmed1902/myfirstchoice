@@ -22,7 +22,7 @@ export function HomeFooter() {
           <Link href="/privacy">Privacy contact</Link>
         </nav>
         <div className={styles.footerContact}>
-          <a href={`mailto:${business.email}`}>{business.email}</a>
+          <Link href="/contact#enquiry-form">Contact Us</Link>
           <strong>{business.name}</strong>
           <span>Company number: {business.number}</span>
           <address>

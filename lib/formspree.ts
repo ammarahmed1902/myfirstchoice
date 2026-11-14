@@ -41,24 +41,32 @@ const fields: Record<string, string> = {
   quantity_required: "quantity",
   message: "message",
 };
+// Do not echo provider error text: it may contain private notification settings.
+const publicFieldErrors: Record<string, string> = {
+  name: "Please check your full name.",
+  email: "Please check your email address.",
+  company: "Please check your company name.",
+  phone: "Please check your phone number.",
+  type: "Please choose an enquiry type.",
+  product: "Please choose a product from our range.",
+  quantity: "Please enter a valid whole quantity.",
+  message: "Please check your message.",
+};
 export function formspreeErrors(
   data: { errors?: FormspreeError[]; error?: string },
   status: number,
 ) {
   const errors: Record<string, string[]> = {};
-  const messages: string[] = [];
   for (const issue of Array.isArray(data.errors) ? data.errors : []) {
-    if (typeof issue.message !== "string") continue;
-    messages.push(issue.message);
-    const field = issue.field && fields[issue.field];
-    if (field) (errors[field] ||= []).push(issue.message);
+    const field = issue?.field && fields[issue.field];
+    if (field) errors[field] = [publicFieldErrors[field]];
   }
   const explanation =
-    messages.join(" ") ||
-    (typeof data.error === "string" ? data.error : "") ||
-    (status === 429
+    status === 429
       ? "Too many requests. Please wait before trying again."
-      : "Your enquiry could not be accepted. Please try again or email us directly.");
+      : Object.keys(errors).length
+        ? "Please check the highlighted details."
+        : "Your enquiry could not be submitted. Please try again.";
   return {
     fields: errors,
     message: `${explanation} Your entered information has been kept.`,

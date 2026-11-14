@@ -38,7 +38,7 @@ Reports and responsive screenshots go in ignored test-results/. Historical Postg
 
 The Contact Us form posts directly to `https://formspree.io/f/myewknly` using JSON and Formspree's public form ID. No Resend, Redis, SMTP credentials or email API key are required by this integration. `/api/enquiries` no longer sends email: old POSTs return 410 with instructions to reload the contact page.
 
-See [docs/EMAIL_SETUP.md](docs/EMAIL_SETUP.md) for the exact recipient, subject and Reply-To verification checklist. The receiving address must be verified in the Formspree dashboard; endpoint acceptance alone does not prove the recipient or inbox delivery. Direct email remains available on the page.
+See [docs/EMAIL_SETUP.md](docs/EMAIL_SETUP.md) for the notification settings, subject and Reply-To verification checklist. The receiving address must be verified in the Formspree dashboard; endpoint acceptance alone does not prove the recipient or inbox delivery. Public contact, privacy requests and order issues use Contact Us links to the enquiry form. The notification destination is kept only in Formspree.
 
 Set `NEXT_PUBLIC_SITE_URL` to the canonical origin. Keep `NEXT_PUBLIC_LAUNCH_READY=false` until content and policy approval. The Formspree endpoint is public; never put dashboard credentials in browser code.
 

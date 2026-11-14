@@ -6,7 +6,7 @@ Prepared 12 November 2026. Do not publish this draft before the decisions listed
 
 ## Controller and contact
 
-EBAY 1ST CHOICE LTD, company number 17532062, registered office: 117 Crocketts Road, Birmingham, England, B21 0HS. Privacy contact: ebayecommerce1947@gmail.com.
+EBAY 1ST CHOICE LTD, company number 17532062, registered office: 117 Crocketts Road, Birmingham, England, B21 0HS. Privacy contact: the Contact Us form at /contact?reason=privacy#enquiry-form.
 
 ## Information collected
 
@@ -30,7 +30,7 @@ The business has specified six months for enquiry correspondence. Confirm when t
 
 ## Rights and complaints
 
-Explain access, correction, erasure, restriction, objection and portability subject to applicable conditions, and withdrawal where a separate processing purpose relies on consent. Explain that a request is made using the privacy email, with proportionate identity checks where necessary. Give the right to complain to the UK Information Commissioner's Office at https://ico.org.uk/make-a-complaint/ and explain how to raise a concern with the company. No solely automated legal/significant-effect decision system is implemented.
+Explain access, correction, erasure, restriction, objection and portability subject to applicable conditions, and withdrawal where a separate processing purpose relies on consent. Explain that a request is made using the Contact Us form, with proportionate identity checks where necessary. Give the right to complain to the UK Information Commissioner's Office at https://ico.org.uk/make-a-complaint/ and explain how to raise a concern with the company. No solely automated legal/significant-effect decision system is implemented.
 
 ## Cookies and similar technology
 

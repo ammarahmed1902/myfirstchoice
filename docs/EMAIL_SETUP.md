@@ -4,8 +4,12 @@ Updated 14 November 2026. Next.js/React, direct AJAX submission. Existing form f
 
 - Public endpoint: https://formspree.io/f/myewknly
 - Form ID: `myewknly`
-- Intended receiving email: `ebayecommerce1947@gmail.com`
+- Notification recipient: the existing verified destination in Formspree; not stored in website code.
 - Fixed subject: `My First Choice — New Website Enquiry`
+
+## Public contact and recipient privacy
+
+The receiving address is not present in application configuration, frontend code, hidden fields, page metadata or public links. Contact Us links replace public address references. Privacy requests use `/contact?reason=privacy#enquiry-form`; damaged/non-delivered order issues use `/contact?reason=order-issue#enquiry-form`. These keep the existing General Enquiry type and prefill a message prompt; customer details continue to submit to the same Formspree form. Provider error text is mapped to safe field/general messages instead of echoed, so private destinations cannot leak through errors.
 
 ## Payload and Reply-To
 
@@ -17,14 +21,14 @@ The intended recipient is NOT submitted by the browser and cannot be verified fr
 
 ## Recipient confirmation and remaining delivery checks
 
-The account owner confirmed in chat on 14 November 2026 that the notification recipient is **ebayecommerce1947@gmail.com** and is verified/enabled. This is user-confirmed dashboard configuration, not an independent dashboard inspection by the assistant.
+The account owner confirmed in chat on 14 November 2026 that the notification recipient is **the verified Formspree notification recipient** and is verified/enabled. This is user-confirmed dashboard configuration, not an independent dashboard inspection by the assistant.
 
 Authenticated Formspree dashboard access was not available to the assistant, and this cloud's network proxy blocked `formspree.io` and `help.formspree.io` with 403. No actual provider submission or inbox receipt was observed. Automated tests intercept requests; they are not live email evidence.
 
 The recipient portion of steps 1–2 is confirmed by the account owner. For delivery handoff, review any custom notification template overrides and complete the remaining checks:
 
 1. Sign in to Formspree, open the project containing form **myewknly**, and open that form's email notification action/settings (Workflow/email notification configuration).
-2. Confirm notifications are enabled and that the actual recipient is exactly **ebayecommerce1947@gmail.com**. If different, set/add the address there. Complete any Formspree verification email sent to that Gmail inbox and confirm the address is shown as verified/enabled.
+2. Confirm the existing notification recipient remains verified/enabled. Do not change that destination for the public-address removal; the existing Formspree routing is retained.
 3. If a notification template or dashboard subject overrides submitted fields, set its subject to **My First Choice — New Website Enquiry**.
 4. Confirm the notification's Reply-To uses the submission's **email** field (the integration also sends `_replyto`). If a custom email template/action is configured, bind its Reply-To to that submitted field, not the receiving Gmail address or a hardcoded sender.
 5. Check any allowed-domain restrictions include the actual deployed website origin. Review spam/CAPTCHA settings and the form's current submission allowance.
