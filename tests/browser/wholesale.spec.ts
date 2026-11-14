@@ -272,19 +272,19 @@ test("internal links, legacy visits, metadata and 404 response work", async ({
     "Disallow: /",
   );
 });
-test("server validation, origin and unconfigured/invalid sends never claim success", async ({
+test("retired delivery endpoint cannot send through the previous provider", async ({
   request,
 }) => {
   const forged = await request.post("/api/enquiries", {
     headers: { origin: "https://attacker.example" },
     data: {},
   });
-  expect(forged.status()).toBe(403);
+  expect(forged.status()).toBe(410);
   const invalid = await request.post("/api/enquiries", {
     headers: { origin: "http://127.0.0.1:3000" },
     data: { name: "A", email: "invalid" },
   });
-  expect(invalid.status()).toBe(400);
+  expect(invalid.status()).toBe(410);
   expect(await invalid.json()).not.toHaveProperty("accepted");
 });
 test("contact validation, service fields, failed sends preserve text; duplicate clicks submit once", async ({
@@ -292,7 +292,7 @@ test("contact validation, service fields, failed sends preserve text; duplicate 
 }) => {
   await ready(page, "/contact?product=lightning-cable");
   const send = page.getByRole("button", { name: "Send Enquiry", exact: true });
-  // This test enables the UI with test-only runtime config; the endpoint is intercepted below.
+  // Formspree requests are intercepted; this test sends no real email.
   await expect(send).toBeEnabled();
   await send.click();
   await expect(
@@ -308,12 +308,12 @@ test("contact validation, service fields, failed sends preserve text; duplicate 
   await expect(page.getByLabel("Product of interest")).toHaveCount(0);
   await page.getByLabel("Enquiry type").selectOption("Wholesale Products");
   let count = 0;
-  await page.route("**/api/enquiries", async (route) => {
+  await page.route("https://formspree.io/f/myewknly", async (route) => {
     count++;
     await new Promise((r) => setTimeout(r, 250));
     await route.fulfill({
       status: 503,
-      json: { error: "Test provider unavailable. Your text has been kept." },
+      json: { errors: [{ message: "Test provider unavailable." }] },
     });
   });
   await send.dblclick({ force: true });
@@ -325,15 +325,15 @@ test("contact validation, service fields, failed sends preserve text; duplicate 
     "Clearly labelled automated QA enquiry — do not send.",
   );
   await expect(send).toBeEnabled();
-  await page.unroute("**/api/enquiries");
-  await page.route("**/api/enquiries", async (route) => {
+  await page.unroute("https://formspree.io/f/myewknly");
+  await page.route("https://formspree.io/f/myewknly", async (route) => {
     count++;
     const data = route.request().postDataJSON();
     expect(data.email).toBe("qa@example.com");
     await route.fulfill({
       status: 202,
       json: {
-        accepted: true,
+        ok: true,
         message:
           "The email provider has accepted your enquiry. This does not confirm inbox receipt.",
       },
@@ -344,7 +344,7 @@ test("contact validation, service fields, failed sends preserve text; duplicate 
     "does not confirm inbox receipt",
   );
   await expect(
-    page.getByRole("button", { name: "Accepted by email provider" }),
+    page.getByRole("button", { name: "Enquiry accepted" }),
   ).toBeDisabled();
   expect(count).toBe(2);
 });

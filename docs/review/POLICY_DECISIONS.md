@@ -1,3 +1,5 @@
+> Update, 14 November 2026: Contact Us now uses Formspree form `myewknly` directly. Earlier Resend/Upstash descriptions below are historical and superseded. See [current email integration notes](../EMAIL_SETUP.md). Confirm Formspree recipient, notification settings, retention and transfer terms during review.
+
 # Policy decisions requiring business confirmation
 
 Prepared 12 November 2026. Internal review document; not a website route.

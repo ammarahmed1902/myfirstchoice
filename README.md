@@ -26,23 +26,20 @@ Do not run a production build while a dev server is writing the same build outpu
 
 ## Browser QA
 
-System Chromium is available in this cloud environment. The browser form acceptance/failure test uses test-only configuration and intercepts the endpoint; it sends no real mail. Stop any server occupying port 3000 before running this command so Playwright starts a server with the test environment:
+System Chromium is available in this cloud environment. Formspree requests in browser tests are intercepted, so automated tests do not send real enquiries. Stop any server occupying port 3000 so Playwright starts its production server:
 
 ```sh
-RESEND_API_KEY=test-only-placeholder \
-ENQUIRY_FROM_EMAIL=enquiries@example.com \
-UPSTASH_REDIS_REST_URL=https://test-only.upstash.io \
-UPSTASH_REDIS_REST_TOKEN=test-only-placeholder \
-PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium \
-CI=1 npm run test:browser
+PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium CI=1 npm run test:browser
 ```
 
-Do not save these test values as production configuration. Reports and responsive screenshots go in ignored test-results/. Existing legacy PostgreSQL/validation unit tests remain for the retained historical schema; they do not indicate that account/order flows are public or required.
+Reports and responsive screenshots go in ignored test-results/. Historical PostgreSQL/validation tests exercise the retained schema; public account/order flows are retired.
 
 ## Email and policies
 
-See docs/EMAIL_SETUP.md for Resend and Upstash configuration. Form sending remains unavailable until all required server-side values are set. Direct email is always available. No Gmail password, checkout, payment collection, customer accounts or admin portal is used. The old commerce URLs redirect to products/contact; their API endpoints return 410.
+The Contact Us form posts directly to `https://formspree.io/f/myewknly` using JSON and Formspree's public form ID. No Resend, Redis, SMTP credentials or email API key are required by this integration. `/api/enquiries` no longer sends email: old POSTs return 410 with instructions to reload the contact page.
 
-Set NEXT*PUBLIC_SITE_URL to the canonical origin. Keep NEXT_PUBLIC_LAUNCH_READY=false until content and policy approval. Enquiry keys are server-only. Never expose them in NEXT_PUBLIC*\* variables.
+See [docs/EMAIL_SETUP.md](docs/EMAIL_SETUP.md) for the exact recipient, subject and Reply-To verification checklist. The receiving address must be verified in the Formspree dashboard; endpoint acceptance alone does not prove the recipient or inbox delivery. Direct email remains available on the page.
+
+Set `NEXT_PUBLIC_SITE_URL` to the canonical origin. Keep `NEXT_PUBLIC_LAUNCH_READY=false` until content and policy approval. The Formspree endpoint is public; never put dashboard credentials in browser code.
 
 See docs/review/ for the unpublished 15-day clause decisions and full privacy policy draft. The business has specified a six-month enquiry retention period; mailbox deletion must be implemented by staff. The registered office is not a confirmed returns or visit address.

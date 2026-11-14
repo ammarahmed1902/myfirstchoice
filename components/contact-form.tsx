@@ -4,14 +4,14 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { contactSchema, enquiryTypes } from "@/lib/contact-schema";
 import { approvedProducts } from "@/lib/homepage-content";
+import {
+  FORMSPREE_ENDPOINT,
+  ENQUIRY_SUBJECT,
+  formspreePayload,
+  formspreeErrors,
+} from "@/lib/formspree";
 type Errors = Record<string, string[] | undefined>;
-export function ContactForm({
-  product = "",
-  configured,
-}: {
-  product?: string;
-  configured: boolean;
-}) {
+export function ContactForm({ product = "" }: { product?: string }) {
   const [type, setType] = useState(
     product ? "Wholesale Products" : "General Enquiry",
   );
@@ -34,26 +34,48 @@ export function ContactForm({
       form.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
       return;
     }
+    if (parsed.data.website) {
+      setNotice(
+        "Your enquiry could not be accepted. Please email us directly.",
+      );
+      return;
+    }
     setErrors({});
     lock.current = true;
     setBusy(true);
     setNotice("");
     try {
-      const result = await fetch("/api/enquiries", {
+      const result = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formspreePayload(parsed.data)),
+        credentials: "omit",
+        signal: AbortSignal.timeout(30000),
       });
       const data = await result.json();
-      if (!result.ok || data.accepted !== true) {
-        setErrors(data.fields || {});
-        setNotice(
-          data.error ||
-            "Your enquiry could not be sent. Your text has been kept. Please email us directly.",
-        );
+      if (
+        !result.ok ||
+        data.ok !== true ||
+        (Array.isArray(data.errors) && data.errors.length)
+      ) {
+        const failure = formspreeErrors(data, result.status);
+        setErrors(failure.fields);
+        setNotice(failure.message);
+        const first = Object.keys(failure.fields)[0];
+        if (first)
+          requestAnimationFrame(() =>
+            form.current
+              ?.querySelector<HTMLElement>(`[name="${first}"]`)
+              ?.focus(),
+          );
       } else {
         setAccepted(true);
-        setNotice(data.message);
+        setNotice(
+          "Thank you. Formspree has accepted your My First Choice enquiry. This does not confirm inbox receipt.",
+        );
       }
     } catch {
       setNotice(
@@ -81,19 +103,15 @@ export function ContactForm({
       ref={form}
       onSubmit={submit}
       noValidate
+      action={FORMSPREE_ENDPOINT}
+      method="POST"
+      aria-busy={busy}
       aria-labelledby="form-heading"
     >
+      <input type="hidden" name="_subject" value={ENQUIRY_SUBJECT} />
+      <input type="hidden" name="website_name" value="My First Choice" />
       <h2 id="form-heading">Make an Enquiry</h2>
       <p>Fields marked * are required.</p>
-      {!configured && (
-        <div className="form-note">
-          Online enquiry delivery is not available yet. You can email{" "}
-          <a href="mailto:ebayecommerce1947@gmail.com">
-            ebayecommerce1947@gmail.com
-          </a>{" "}
-          directly.
-        </div>
-      )}
       <fieldset disabled={busy || accepted}>
         <div className="field-pair">
           <label>
@@ -205,20 +223,16 @@ export function ContactForm({
           </label>
         </div>
         <p className="privacy-note">
-          We use these details to respond to your enquiry. No marketing
-          permission is requested. See{" "}
+          We use these details to respond to your enquiry. Formspree processes
+          the submission. No marketing permission is requested. See{" "}
           <Link href="/privacy">website privacy information and contact</Link>.
         </p>
         <button
           type="submit"
           className="action-button"
-          disabled={!configured || busy || accepted}
+          disabled={busy || accepted}
         >
-          {busy
-            ? "Sending…"
-            : accepted
-              ? "Accepted by email provider"
-              : "Send Enquiry"}
+          {busy ? "Sending…" : accepted ? "Enquiry accepted" : "Send Enquiry"}
           <ArrowUpRight size={17} aria-hidden="true" />
         </button>
       </fieldset>
@@ -234,6 +248,9 @@ export function ContactForm({
           type="button"
           className="text-link"
           onClick={() => {
+            form.current?.reset();
+            setType(product ? "Wholesale Products" : "General Enquiry");
+            setErrors({});
             setAccepted(false);
             setNotice("");
           }}

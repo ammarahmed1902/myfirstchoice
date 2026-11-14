@@ -1,42 +1,51 @@
-# Enquiry delivery setup
+# Contact Us — Formspree integration
 
-The old /api/enquiries implementation required a verified Supabase login and saved to a database. It did not deliver email. The new endpoint at the same URL is a public, server-validated email integration. Account/order APIs have been retired with HTTP 410. No database migration is needed.
+Updated 14 November 2026. Next.js/React, direct AJAX submission. Existing form fields, classes, layout and product-prefill behaviour are preserved.
 
-## Production configuration
+- Public endpoint: https://formspree.io/f/myewknly
+- Form ID: `myewknly`
+- Intended receiving email: `ebayecommerce1947@gmail.com`
+- Fixed subject: `My First Choice — New Website Enquiry`
 
-Set these server-only variables securely in Vercel (and environment settings for cloud live testing), then restart/redeploy:
+## Payload and Reply-To
 
-| Variable                 | Required value                                                                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| RESEND_API_KEY           | A Resend API key authorised to send mail. Never a Gmail password.                                                              |
-| ENQUIRY_FROM_EMAIL       | A plain email address on a domain verified for sending in Resend. The receiving Gmail address is not a verified sender domain. |
-| UPSTASH_REDIS_REST_URL   | The HTTPS REST URL of a dedicated Upstash Redis database.                                                                      |
-| UPSTASH_REDIS_REST_TOKEN | The token for that database, kept server-side.                                                                                 |
+The React form validates the existing fields with the shared Zod schema, then sends JSON with `Accept: application/json` directly to Formspree. All submitted customer details have explicit fields: `name`, `email`, `company`, `phone`, `enquiry_type`, `product_of_interest`, `product_reference`, `quantity_required`, `message`. Product fields are included only for Wholesale Products. The product name is resolved from the shared approved product data; the reference is also retained.
 
-The recipient is fixed in server code as ebayecommerce1947@gmail.com. Reply-To is the validated customer email. Do not set customer input as From or recipient. No service-role key or customer account is required. Sender verification/DNS records and production keys are not available in this session.
+`website_name` is `My First Choice`, and the message begins `Website: My First Choice`, followed by the customer's text. Both `subject` and the special `_subject` field contain the exact fixed subject for compatibility with Formspree notification settings. The supported customer `email` field and legacy special `_replyto` field both carry the validated customer email. Never set From to the customer's address; Formspree controls its sending identity. The legacy special fields are documented in Formspree's official repository: https://github.com/formspree/formspree#advanced-features.
 
-For this restricted cloud environment, outbound access is needed to api.resend.com and the precise Upstash REST hostname once chosen. ICO guidance requires ico.org.uk. Enter keys through secure settings, never chat. No keys are included in the repository or browser bundle.
+The intended recipient is NOT submitted by the browser and cannot be verified from the public form ID. Formspree's dashboard notification action is authoritative.
 
-## Controls
+## Recipient confirmation and remaining delivery checks
 
-- Same-origin JSON requests only; streamed body limit of 24 KB.
-- Server field validation, fixed subject types, single-line header fields and escaped HTML email content.
-- Honeypot plus an atomic, shared Redis limit of five attempts per hour per hosting-provided client identity. Vercel's overwritten x-vercel-forwarded-for is used on Vercel; local execution deliberately shares one identity. Other hosts need a trusted identity adapter before public use. Do not trust arbitrary forwarded headers.
-- Redis deduplication for identical validated payloads: two-minute in-flight reservation, accepted hash retained for 24 hours. Resend gets a stable content-based idempotency key, protecting uncertain retries and concurrent instances. Changing a field makes a new enquiry, subject to rate limits.
-- No raw message or email/IP data in Redis; an HMAC keyed by the Redis token protects the rate-limit IP identifier. Request/delivery suppliers can have their own logs.
-- No simulated success. Missing configuration or Redis fails closed; acceptance is shown only after a provider response with an ID, or a previously accepted identical payload.
-- A client-side synchronous lock prevents repeated clicks. Failure leaves form values on the page. Reload/close does not persist messages.
+The account owner confirmed in chat on 14 November 2026 that the notification recipient is **ebayecommerce1947@gmail.com** and is verified/enabled. This is user-confirmed dashboard configuration, not an independent dashboard inspection by the assistant.
 
-The Redis limiter must not be shared with an untrusted client or configured for public reads. Apply appropriate account access controls and review the chosen suppliers' regions and retention.
+Authenticated Formspree dashboard access was not available to the assistant, and this cloud's network proxy blocked `formspree.io` and `help.formspree.io` with 403. No actual provider submission or inbox receipt was observed. Automated tests intercept requests; they are not live email evidence.
 
-## Delivery QA
+The recipient portion of steps 1–2 is confirmed by the account owner. For delivery handoff, review any custom notification template overrides and complete the remaining checks:
 
-Automated tests inject a fake provider and fake Redis; browser acceptance/error checks intercept the endpoint. These tests send no email. After real configuration:
+1. Sign in to Formspree, open the project containing form **myewknly**, and open that form's email notification action/settings (Workflow/email notification configuration).
+2. Confirm notifications are enabled and that the actual recipient is exactly **ebayecommerce1947@gmail.com**. If different, set/add the address there. Complete any Formspree verification email sent to that Gmail inbox and confirm the address is shown as verified/enabled.
+3. If a notification template or dashboard subject overrides submitted fields, set its subject to **My First Choice — New Website Enquiry**.
+4. Confirm the notification's Reply-To uses the submission's **email** field (the integration also sends `_replyto`). If a custom email template/action is configured, bind its Reply-To to that submitted field, not the receiving Gmail address or a hardcoded sender.
+5. Check any allowed-domain restrictions include the actual deployed website origin. Review spam/CAPTCHA settings and the form's current submission allowance.
+6. Submit one clearly labelled controlled enquiry through the deployed Contact Us page. Confirm it appears under this form's submissions, then separately confirm the Gmail notification is received, the subject is exact, all customer fields are present and Reply opens a response to the entered customer email. Record provider acceptance and inbox receipt separately.
 
-1. Use Contact Us to send a clearly labelled test enquiry with a controlled Reply-To address.
-2. Verify actual provider acceptance and recorded provider ID in its dashboard without logging customer messages publicly.
-3. Confirm the receiving inbox separately with the recipient; do not infer inbox receipt from HTTP 202.
-4. Verify Reply-To, product/quantity and service-type content, spam/rate limiting and retry behaviour.
-5. Record the provider acceptance and recipient-confirmed receipt as separate outcomes.
+Do not supply a Gmail password, Formspree dashboard password or private key in code/chat. This public-ID integration requires no Resend, Upstash or SMTP environment variables.
 
-Current status: no production credentials, verified sender or Upstash database. No live email submitted; no provider acceptance or inbox receipt observed.
+## Success, failure and duplicate handling
+
+A synchronous in-flight lock and disabled fieldset/button prevent repeated sends while a request is pending. Loading text is “Sending…”. Success requires an HTTP success response with Formspree `ok: true` and no errors. Inputs are disabled after acceptance until “Write another enquiry” resets the form. The text explicitly distinguishes Formspree acceptance from inbox receipt.
+
+HTTP errors, field errors, throttling, network errors, timeouts and invalid responses show useful failure text and preserve the entered values. No automatic retry occurs after an uncertain timeout. Formspree does not supply an idempotency guarantee here; a manual retry after an uncertain accepted request can produce another submission. The UI prevents accidental concurrent clicks, not all possible duplicate messages across devices.
+
+The existing honeypot is checked before sending and maps to Formspree `_gotcha`. Formspree handles provider-side spam controls; configure its dashboard validation/CAPTCHA as appropriate. No own Redis limiter or email-delivery backend is involved. The old `/api/enquiries` POST returns 410 to prevent use of the retired Resend path.
+
+## Local validation and deployment
+
+Build/type checks, payload/validation tests and intercepted browser acceptance/error tests can run without credentials. Browser tests check all customer fields and Reply-To, subject and website branding, loading/lock, validation, HTTP/network/malformed-response failures, and preserved values. Responsive capture uses the existing contact layout at 390, 820 and 1440 pixels.
+
+Allow `formspree.io` and `help.formspree.io` in this cloud environment's outbound settings for real endpoint/documentation access. Domain additions were saved as a draft only; review/save those settings and publish the cloud environment if desired. This is separate from deploying website code to Vercel. No live send, inbox verification, Git push or website deployment is claimed by the local tests.
+
+## Privacy
+
+The public website privacy information now names Formspree instead of Resend/Upstash. Formspree processes the customer information and request metadata, and may retain submissions under its account settings/policies. Confirm the account's actual retention and international transfer safeguards during the outstanding policy review. The business's six-month correspondence policy requires handling copies in both the provider account and Gmail; this code does not automatically delete those copies.

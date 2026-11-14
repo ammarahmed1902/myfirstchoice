@@ -1,22 +1,17 @@
-import {
-  deliveryConfig,
-  deliveryReady,
-  handleEnquiry,
-} from "@/lib/enquiry-delivery";
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+// The Contact Us form now submits directly to its fixed Formspree endpoint.
+// Retire the previous Resend endpoint so old clients cannot use a second delivery path.
 export function GET() {
   return Response.json(
-    { configured: deliveryReady(deliveryConfig()) },
+    { provider: "Formspree", formId: "myewknly" },
     { headers: { "Cache-Control": "no-store" } },
   );
 }
-export function POST(request: Request) {
-  // On Vercel this header is overwritten by its edge; never trust arbitrary forwarding headers locally.
-  const identity =
-    process.env.VERCEL === "1"
-      ? request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-        "unknown"
-      : "local-shared";
-  return handleEnquiry(request, deliveryConfig(), fetch, identity);
+export function POST() {
+  return Response.json(
+    {
+      error:
+        "Please reload the Contact Us page to use the updated enquiry form.",
+    },
+    { status: 410, headers: { "Cache-Control": "no-store" } },
+  );
 }

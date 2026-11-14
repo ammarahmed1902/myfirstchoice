@@ -28,11 +28,10 @@ export default function PrivacyContact() {
         to the enquiry. No marketing permission is requested.
       </p>
       <p>
-        Online sending is available only when the email service and spam
-        controls are configured. When enabled, the website sends the enquiry
-        through Resend to the company’s email inbox. An acceptance message means
-        that the email provider has accepted the request; it does not confirm
-        inbox receipt. You can also email the company directly.
+        When you submit the form, your enquiry is sent directly to Formspree for
+        processing and email notification to the business. A success message
+        means Formspree has accepted the submission; it does not confirm inbox
+        receipt. You can also email the company directly.
       </p>
       <h2>Retention</h2>
       <p>
@@ -50,12 +49,13 @@ export default function PrivacyContact() {
         when you close or reload the page.
       </p>
       <p>
-        When online sending is enabled, Upstash Redis stores a keyed hash used
-        for hourly abuse limits and a hash used to recognise duplicate enquiries
-        for up to 24 hours. The application does not store the message body in
-        Redis or write it to application logs. Hosting, email and network
-        providers may process request and delivery information as part of
-        operating their services.
+        Formspree processes the enquiry details and request information for
+        delivery and spam prevention. The website does not copy form messages
+        into its own database or use Redis for this form. Formspree and the
+        business email provider may retain submissions and delivery records
+        under their configured settings and policies. Contact us about your
+        information; the six-month correspondence policy also requires the
+        business to manage copies held in those services.
       </p>
       <h2>Your choices and rights</h2>
       <p>

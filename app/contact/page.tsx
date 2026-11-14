@@ -1,7 +1,6 @@
 import { ContactForm } from "@/components/contact-form";
 import { approvedProducts } from "@/lib/homepage-content";
 import { business } from "@/lib/config";
-import { deliveryConfig, deliveryReady } from "@/lib/enquiry-delivery";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Contact Us",
@@ -53,11 +52,7 @@ export default async function Contact({
             collections and returns have not been arranged through this website.
           </p>
         </aside>
-        <ContactForm
-          key={selected}
-          product={selected}
-          configured={deliveryReady(deliveryConfig())}
-        />
+        <ContactForm key={selected} product={selected} />
       </div>
     </section>
   );

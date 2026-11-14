@@ -1,3 +1,5 @@
+> Update, 14 November 2026: Contact Us now uses Formspree form `myewknly` directly. Earlier Resend/Upstash descriptions below are historical and superseded. See [current email integration notes](EMAIL_SETUP.md). Confirm Formspree recipient, notification settings, retention and transfer terms during review.
+
 # My First Choice implementation and QA handoff
 
 12 November 2026. Local repository implementation; not a Vercel deployment. The existing production address is https://my1stchoice.vercel.app/ but this task has not updated or validated a new deployment there. No remote preview/deployment URL is available in this session.
