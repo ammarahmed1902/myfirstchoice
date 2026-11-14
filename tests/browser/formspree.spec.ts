@@ -45,11 +45,8 @@ test("direct Formspree request includes branding, all details and customer Reply
   await expect(page.getByRole("status")).toBeEmpty();
   expect(requests).toBe(1);
   release();
-  await expect(page.getByRole("status")).toContainText(
-    "Formspree has accepted",
-  );
-  await expect(page.getByRole("status")).toContainText(
-    "does not confirm inbox receipt",
+  await expect(page.getByRole("status")).toHaveText(
+    "Thank you! Your enquiry has been submitted.",
   );
   await expect(
     page.getByRole("button", { name: "Enquiry accepted" }),

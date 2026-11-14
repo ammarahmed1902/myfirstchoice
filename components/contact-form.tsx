@@ -74,7 +74,7 @@ export function ContactForm({ product = "" }: { product?: string }) {
       } else {
         setAccepted(true);
         setNotice(
-          "Thank you. Formspree has accepted your My First Choice enquiry. This does not confirm inbox receipt.",
+          "Thank you! Your enquiry has been submitted.",
         );
       }
     } catch {

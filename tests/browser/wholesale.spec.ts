@@ -335,13 +335,13 @@ test("contact validation, service fields, failed sends preserve text; duplicate 
       json: {
         ok: true,
         message:
-          "The email provider has accepted your enquiry. This does not confirm inbox receipt.",
+          "Thank you! Your enquiry has been submitted.",
       },
     });
   });
   await send.click();
   await expect(page.getByRole("status")).toContainText(
-    "does not confirm inbox receipt",
+    "Thank you! Your enquiry has been submitted.",
   );
   await expect(
     page.getByRole("button", { name: "Enquiry accepted" }),

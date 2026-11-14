@@ -34,7 +34,7 @@ Do not supply a Gmail password, Formspree dashboard password or private key in c
 
 ## Success, failure and duplicate handling
 
-A synchronous in-flight lock and disabled fieldset/button prevent repeated sends while a request is pending. Loading text is “Sending…”. Success requires an HTTP success response with Formspree `ok: true` and no errors. Inputs are disabled after acceptance until “Write another enquiry” resets the form. The text explicitly distinguishes Formspree acceptance from inbox receipt.
+A synchronous in-flight lock and disabled fieldset/button prevent repeated sends while a request is pending. Loading text is “Sending…”. Success requires an HTTP success response with Formspree `ok: true` and no errors. Inputs are disabled after acceptance until “Write another enquiry” resets the form. The customer sees “Thank you! Your enquiry has been submitted.” This acknowledges submission without claiming confirmed inbox delivery.
 
 HTTP errors, field errors, throttling, network errors, timeouts and invalid responses show useful failure text and preserve the entered values. No automatic retry occurs after an uncertain timeout. Formspree does not supply an idempotency guarantee here; a manual retry after an uncertain accepted request can produce another submission. The UI prevents accidental concurrent clicks, not all possible duplicate messages across devices.
 
